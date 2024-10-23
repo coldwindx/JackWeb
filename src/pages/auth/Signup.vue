@@ -1,15 +1,15 @@
 <template>
   <VaForm ref="form" @submit.prevent="submit">
-    <h1 class="font-semibold text-4xl mb-4">Sign up</h1>
+    <h1 class="font-semibold text-4xl mb-4">注册</h1>
     <p class="text-base mb-4 leading-5">
-      Have an account?
-      <RouterLink :to="{ name: 'login' }" class="font-semibold text-primary">Login</RouterLink>
+      已有账号？
+      <RouterLink :to="{ name: 'login' }" class="font-semibold text-primary">登录</RouterLink>
     </p>
     <VaInput
       v-model="formData.email"
       :rules="[(v) => !!v || 'Email field is required', (v) => /.+@.+\..+/.test(v) || 'Email should be valid']"
       class="mb-4"
-      label="Email"
+      label="邮箱"
       type="email"
     />
     <VaValue v-slot="isPasswordVisible" :default-value="false">
@@ -19,8 +19,8 @@
         :rules="passwordRules"
         :type="isPasswordVisible.value ? 'text' : 'password'"
         class="mb-4"
-        label="Password"
-        messages="Password should be 8+ characters: letters, numbers, and special characters."
+        label="密码"
+        messages="密码长度为8个字符以上，包含字母、数字和特殊字符。"
         @clickAppendInner.stop="isPasswordVisible.value = !isPasswordVisible.value"
       >
         <template #appendInner>
@@ -34,13 +34,10 @@
       <VaInput
         ref="password2"
         v-model="formData.repeatPassword"
-        :rules="[
-          (v) => !!v || 'Repeat Password field is required',
-          (v) => v === formData.password || 'Passwords don\'t match',
-        ]"
+        :rules="[(v) => !!v || '请输入[重复密码]', (v) => v === formData.password || '用户名或密码错误']"
         :type="isPasswordVisible.value ? 'text' : 'password'"
         class="mb-4"
-        label="Repeat Password"
+        label="重复密码"
         @clickAppendInner.stop="isPasswordVisible.value = !isPasswordVisible.value"
       >
         <template #appendInner>
@@ -54,7 +51,7 @@
     </VaValue>
 
     <div class="flex justify-center mt-4">
-      <VaButton class="w-full" @click="submit"> Create account</VaButton>
+      <VaButton class="w-full" @click="submit">创建</VaButton>
     </div>
   </VaForm>
 </template>
@@ -77,7 +74,7 @@ const formData = reactive({
 const submit = () => {
   if (validate()) {
     init({
-      message: "You've successfully signed up",
+      message: '注册成功',
       color: 'success',
     })
     push({ name: 'dashboard' })
@@ -85,10 +82,10 @@ const submit = () => {
 }
 
 const passwordRules: ((v: string) => boolean | string)[] = [
-  (v) => !!v || 'Password field is required',
-  (v) => (v && v.length >= 8) || 'Password must be at least 8 characters long',
-  (v) => (v && /[A-Za-z]/.test(v)) || 'Password must contain at least one letter',
-  (v) => (v && /\d/.test(v)) || 'Password must contain at least one number',
-  (v) => (v && /[!@#$%^&*(),.?":{}|<>]/.test(v)) || 'Password must contain at least one special character',
+  (v) => !!v || '请输入[重复密码]',
+  (v) => (v && v.length >= 8) || '密码长度至少为8个字符',
+  (v) => (v && /[A-Za-z]/.test(v)) || '密码必须包含至少一个字母',
+  (v) => (v && /\d/.test(v)) || '密码必须包含至少一个数字',
+  (v) => (v && /[!@#$%^&*(),.?":{}|<>]/.test(v)) || '密码必须包含至少一个特殊字符',
 ]
 </script>
