@@ -1,19 +1,12 @@
 <template>
   <VaForm ref="passwordForm" @submit.prevent="submit">
-    <h1 class="font-semibold text-4xl mb-4">Forgot your password?</h1>
+    <h1 class="font-semibold text-4xl mb-4">忘记密码?</h1>
     <p class="text-base mb-4 leading-5">
-      If you've forgotten your password, don't worry. Simply enter your email address below, and we'll send you an email
-      with a temporary password. Restoring access to your account has never been easier.
+      如果你忘记了密码，别担心。只需在下面输入您的电子邮件地址，我们就会给您发送电子邮件使用临时密码。恢复访问您的帐户从未如此简单。
     </p>
-    <VaInput
-      v-model="email"
-      :rules="[(v) => !!v || 'Email field is required']"
-      class="mb-4"
-      label="Enter your email"
-      type="email"
-    />
-    <VaButton class="w-full mb-2" @click="submit">Send password</VaButton>
-    <VaButton :to="{ name: 'login' }" class="w-full" preset="secondary" @click="submit">Go back</VaButton>
+    <VaInput v-model="email" :rules="[(v) => !!v || '请输入[邮箱]']" class="mb-4" label="邮箱" type="email" />
+    <VaButton class="w-full mb-2" @click="submit">发送密码</VaButton>
+    <VaButton :to="{ name: 'login' }" class="w-full" preset="secondary" @click="submit">返回登录页面</VaButton>
   </VaForm>
 </template>
 
