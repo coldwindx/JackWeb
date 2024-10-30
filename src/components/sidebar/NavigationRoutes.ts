@@ -12,15 +12,15 @@ export default {
   },
   routes: [
     {
-      name: 'datasets',
-      displayName: 'menu.datasets',
+      name: 'dashboard',
+      displayName: 'menu.dashboard',
       meta: {
         icon: 'vuestic-iconset-dashboard',
       },
     },
     {
-      name: 'dashboard',
-      displayName: 'menu.dashboard',
+      name: 'datasets',
+      displayName: 'menu.datasets',
       meta: {
         icon: 'vuestic-iconset-dashboard',
       },
