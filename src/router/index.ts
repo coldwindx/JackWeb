@@ -17,6 +17,11 @@ const routes: Array<RouteRecordRaw> = [
     redirect: { name: 'dashboard' },
     children: [
       {
+        name: 'datasets',
+        path: 'datasets',
+        component: () => import('../pages/datasets/DatasetPage.vue'),
+      },
+      {
         name: 'dashboard',
         path: 'dashboard',
         component: () => import('../pages/admin/dashboard/Dashboard.vue'),

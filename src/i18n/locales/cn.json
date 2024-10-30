@@ -91,10 +91,14 @@
     "persian": "波斯语"
   },
   "menu": {
+    "datasets":"数据收集",
+    "dashboard": "仪表板",
+    "users":"用户",
+    "projects":"项目",
     "auth": "授权",
     "buttons": "按钮",
     "timelines": "时间线",
-    "dashboard": "仪表板",
+    "settings": "设置",
     "billing": "计费",
     "login": "登录",
     "signUp": "注册",
