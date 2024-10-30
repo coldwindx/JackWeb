@@ -91,10 +91,10 @@
     "persian": "波斯语"
   },
   "menu": {
-    "datasets":"数据收集",
+    "datasets": "数据收集",
     "dashboard": "仪表板",
-    "users":"用户",
-    "projects":"项目",
+    "users": "用户",
+    "projects": "项目",
     "auth": "授权",
     "buttons": "按钮",
     "timelines": "时间线",
