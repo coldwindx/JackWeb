@@ -3,7 +3,6 @@ import { PropType, computed, ref, watch } from 'vue'
 import { useForm } from 'vuestic-ui'
 import { User, UserRole } from '../types'
 import UserAvatar from './UserAvatar.vue'
-import { useProjects } from '../../projects/composables/useProjects'
 import { validators } from '../../../services/utils'
 
 const props = defineProps({
@@ -19,14 +18,12 @@ const props = defineProps({
 
 const defaultNewUser: User = {
   id: -1,
-  avatar: '',
   fullname: '',
   role: 'user',
   username: '',
-  notes: '',
   email: '',
+  avatar: '',
   active: true,
-  projects: [],
 }
 
 const newUser = ref<User>({ ...defaultNewUser })
@@ -36,7 +33,6 @@ const isFormHasUnsavedChanges = computed(() => {
     if (key === 'avatar' || key === 'projects') {
       return false
     }
-
     return newUser.value[key as keyof User] !== (props.user ?? defaultNewUser)?.[key as keyof User]
   })
 })
@@ -54,21 +50,12 @@ watch(
 
     newUser.value = {
       ...props.user,
-      avatar: props.user.avatar || '',
     }
   },
   { immediate: true },
 )
 
 const avatar = ref<File>()
-
-const makeAvatarBlobUrl = (avatar: File) => {
-  return URL.createObjectURL(avatar)
-}
-
-watch(avatar, (newAvatar) => {
-  newUser.value.avatar = newAvatar ? makeAvatarBlobUrl(newAvatar) : ''
-})
 
 const form = useForm('add-user-form')
 
@@ -85,8 +72,6 @@ const roleSelectOptions: { text: Capitalize<UserRole>; value: UserRole }[] = [
   { text: 'User', value: 'user' },
   { text: 'Owner', value: 'owner' },
 ]
-
-const { projects } = useProjects({ pagination: ref({ page: 1, perPage: 9999, total: 10 }) })
 </script>
 
 <template>
@@ -98,7 +83,7 @@ const { projects } = useProjects({ pagination: ref({ page: 1, perPage: 9999, tot
       class="self-stretch justify-start items-center gap-4 inline-flex"
     >
       <UserAvatar :user="newUser" size="large" />
-      <VaButton preset="primary" size="small">Add image</VaButton>
+      <VaButton preset="primary" size="small">添加头像</VaButton>
       <VaButton
         v-if="avatar"
         preset="primary"
@@ -113,14 +98,14 @@ const { projects } = useProjects({ pagination: ref({ page: 1, perPage: 9999, tot
       <div class="flex gap-4 flex-col sm:flex-row w-full">
         <VaInput
           v-model="newUser.fullname"
-          label="Full name"
+          label="姓名"
           class="w-full sm:w-1/2"
           :rules="[validators.required]"
           name="fullname"
         />
         <VaInput
           v-model="newUser.username"
-          label="Username"
+          label="昵称"
           class="w-full sm:w-1/2"
           :rules="[validators.required]"
           name="username"
@@ -129,22 +114,10 @@ const { projects } = useProjects({ pagination: ref({ page: 1, perPage: 9999, tot
       <div class="flex gap-4 flex-col sm:flex-row w-full">
         <VaInput
           v-model="newUser.email"
-          label="Email"
+          label="邮箱"
           class="w-full sm:w-1/2"
           :rules="[validators.required, validators.email]"
           name="email"
-        />
-        <VaSelect
-          v-model="newUser.projects"
-          label="Projects"
-          class="w-full sm:w-1/2"
-          :options="projects"
-          :rules="[validators.required]"
-          name="projects"
-          text-by="project_name"
-          track-by="id"
-          multiple
-          :max-visible-options="2"
         />
       </div>
 
@@ -152,7 +125,7 @@ const { projects } = useProjects({ pagination: ref({ page: 1, perPage: 9999, tot
         <div class="w-1/2">
           <VaSelect
             v-model="newUser.role"
-            label="Role"
+            label="权限"
             class="w-full"
             :options="roleSelectOptions"
             :rules="[validators.required]"
@@ -161,14 +134,13 @@ const { projects } = useProjects({ pagination: ref({ page: 1, perPage: 9999, tot
           />
         </div>
 
-        <div class="flex items-center w-1/2 mt-4">
-          <VaCheckbox v-model="newUser.active" label="Active" class="w-full" name="active" />
-        </div>
+        <!-- <div class="flex items-center w-1/2 mt-4">
+          <VaCheckbox v-model="newUser.active" label="活跃" class="w-full" name="active" />
+        </div> -->
       </div>
 
-      <VaTextarea v-model="newUser.notes" label="Notes" class="w-full" name="notes" />
       <div class="flex gap-2 flex-col-reverse items-stretch justify-end w-full sm:flex-row sm:items-center">
-        <VaButton preset="secondary" color="secondary" @click="$emit('close')">Cancel</VaButton>
+        <VaButton preset="secondary" color="secondary" @click="$emit('close')">取消</VaButton>
         <VaButton :disabled="!isValid" @click="onSave">{{ saveButtonLabel }}</VaButton>
       </div>
     </div>

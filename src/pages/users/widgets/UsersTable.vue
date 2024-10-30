@@ -5,14 +5,12 @@ import UserAvatar from './UserAvatar.vue'
 import { PropType, computed, toRef } from 'vue'
 import { Pagination, Sorting } from '../../../data/pages/users'
 import { useVModel } from '@vueuse/core'
-import { Project } from '../../projects/types'
 
 const columns = defineVaDataTableColumns([
-  { label: 'Full Name', key: 'fullname', sortable: true },
-  { label: 'Email', key: 'email', sortable: true },
-  { label: 'Username', key: 'username', sortable: true },
-  { label: 'Role', key: 'role', sortable: true },
-  { label: 'Projects', key: 'projects', sortable: true },
+  { label: '姓名', key: 'fullname', sortable: true },
+  { label: '邮箱', key: 'email', sortable: true },
+  { label: '昵称', key: 'username', sortable: true },
+  { label: '权限', key: 'role', sortable: true },
   { label: ' ', key: 'actions', align: 'right' },
 ])
 
@@ -50,10 +48,10 @@ const { confirm } = useModal()
 
 const onUserDelete = async (user: User) => {
   const agreed = await confirm({
-    title: 'Delete user',
-    message: `Are you sure you want to delete ${user.fullname}?`,
-    okText: 'Delete',
-    cancelText: 'Cancel',
+    title: '删除用户',
+    message: `确定删除用户${user.fullname}?`,
+    okText: '确定删除',
+    cancelText: '取消',
     size: 'small',
     maxWidth: '380px',
   })
@@ -61,23 +59,6 @@ const onUserDelete = async (user: User) => {
   if (agreed) {
     emit('delete-user', user)
   }
-}
-
-const formatProjectNames = (projects: Project[]) => {
-  if (projects.length === 0) return 'No projects'
-  if (projects.length <= 2) {
-    return projects.map((project) => project.project_name).join(', ')
-  }
-
-  return (
-    projects
-      .slice(0, 2)
-      .map((project) => project.project_name)
-      .join(', ') +
-    ' + ' +
-    (projects.length - 2) +
-    ' more'
-  )
 }
 </script>
 
@@ -110,12 +91,6 @@ const formatProjectNames = (projects: Project[]) => {
 
     <template #cell(role)="{ rowData }">
       <VaBadge :text="rowData.role" :color="roleColors[rowData.role as UserRole]" />
-    </template>
-
-    <template #cell(projects)="{ rowData }">
-      <div class="ellipsis max-w-[300px] lg:max-w-[450px]">
-        {{ formatProjectNames(rowData.projects) }}
-      </div>
     </template>
 
     <template #cell(actions)="{ rowData }">

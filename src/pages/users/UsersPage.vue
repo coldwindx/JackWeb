@@ -7,9 +7,7 @@ import { useUsers } from './composables/useUsers'
 import { useModal, useToast } from 'vuestic-ui'
 
 const doShowEditUserModal = ref(false)
-
 const { users, isLoading, filters, sorting, pagination, ...usersApi } = useUsers()
-
 const userToEdit = ref<User | null>(null)
 
 const showEditUserModal = (user: User) => {
@@ -28,13 +26,13 @@ const onUserSaved = async (user: User) => {
   if (userToEdit.value) {
     await usersApi.update(user)
     notify({
-      message: `${user.fullname} has been updated`,
+      message: `${user.fullname}已被修改`,
       color: 'success',
     })
   } else {
     usersApi.add(user)
     notify({
-      message: `${user.fullname} has been created`,
+      message: `${user.fullname}已被创建`,
       color: 'success',
     })
   }
@@ -43,7 +41,7 @@ const onUserSaved = async (user: User) => {
 const onUserDelete = async (user: User) => {
   await usersApi.remove(user)
   notify({
-    message: `${user.fullname} has been deleted`,
+    message: `${user.fullname}已被删除`,
     color: 'success',
   })
 }
@@ -56,7 +54,7 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
   if (editFormRef.value.isFormHasUnsavedChanges) {
     const agreed = await confirm({
       maxWidth: '380px',
-      message: 'Form has unsaved changes. Are you sure you want to close it?',
+      message: '表单有未保存的更改，你确定要关闭吗？',
       size: 'small',
     })
     if (agreed) {
@@ -69,7 +67,7 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
 </script>
 
 <template>
-  <h1 class="page-title">Users</h1>
+  <h1 class="page-title">用户管理</h1>
 
   <VaCard>
     <VaCardContent>
@@ -79,9 +77,10 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
             v-model="filters.isActive"
             color="background-element"
             border-color="background-element"
+            style="width: 200px"
             :options="[
-              { label: 'Active', value: true },
-              { label: 'Inactive', value: false },
+              { label: '活跃', value: true },
+              { label: '离线', value: false },
             ]"
           />
           <VaInput v-model="filters.search" placeholder="Search">
@@ -90,7 +89,7 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
             </template>
           </VaInput>
         </div>
-        <VaButton @click="showAddUserModal">Add User</VaButton>
+        <VaButton @click="showAddUserModal">新增用户</VaButton>
       </div>
 
       <UsersTable
@@ -114,11 +113,11 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
     hide-default-actions
     :before-cancel="beforeEditFormModalClose"
   >
-    <h1 class="va-h5">{{ userToEdit ? 'Edit user' : 'Add user' }}</h1>
+    <h1 class="va-h5">{{ userToEdit ? '修改信息' : '新增用户' }}</h1>
     <EditUserForm
       ref="editFormRef"
       :user="userToEdit"
-      :save-button-label="userToEdit ? 'Save' : 'Add'"
+      :save-button-label="userToEdit ? '保存' : '添加'"
       @close="cancel"
       @save="
         (user) => {
