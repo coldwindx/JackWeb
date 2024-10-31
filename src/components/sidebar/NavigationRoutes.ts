@@ -33,6 +33,14 @@ export default {
       },
     },
     {
+      name: 'detection',
+      displayName: 'menu.detection',
+      meta: {
+        iconName: 'troubleshoot',
+      },
+    },
+
+    {
       name: 'projects',
       displayName: 'menu.projects',
       meta: {
