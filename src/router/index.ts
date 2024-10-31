@@ -41,7 +41,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'tokenization',
         component: () => import('../pages/tokenization/TokenizationPage.vue'),
       },
-
+      {
+        name: 'training',
+        path: 'training',
+        component: () => import('../pages/training/TrainingPage.vue'),
+      },
       {
         name: 'settings',
         path: 'settings',

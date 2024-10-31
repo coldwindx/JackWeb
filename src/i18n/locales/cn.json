@@ -97,6 +97,7 @@
     "detection": "勒索检测",
     "history": "历史记录",
     "tokenization": "构建词表",
+    "training": "模型训练",
 
     "projects": "项目",
     "auth": "授权",

@@ -53,6 +53,19 @@ export default {
         iconName: 'token',
       },
     },
+    {
+      name: 'training',
+      displayName: 'menu.training',
+      meta: {
+        iconName: 'model_training',
+      },
+    },
+
+
+
+
+
+
 
     {
       name: 'projects',
