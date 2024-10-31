@@ -36,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'history',
         component: () => import('../pages/history/HistoryPage.vue'),
       },
+      {
+        name: 'tokenization',
+        path: 'tokenization',
+        component: () => import('../pages/tokenization/TokenizationPage.vue'),
+      },
 
       {
         name: 'settings',

@@ -46,6 +46,13 @@ export default {
         iconName: 'history',
       },
     },
+    {
+      name: 'tokenization',
+      displayName: 'menu.tokenization',
+      meta: {
+        iconName: 'token',
+      },
+    },
 
     {
       name: 'projects',
