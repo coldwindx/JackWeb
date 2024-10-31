@@ -1,7 +1,7 @@
 export interface INavigationRoute {
   name: string
   displayName: string
-  meta: { icon: string }
+  meta: { iconName: string }
   children?: INavigationRoute[]
 }
 
@@ -15,21 +15,21 @@ export default {
       name: 'dashboard',
       displayName: 'menu.dashboard',
       meta: {
-        icon: 'vuestic-iconset-dashboard',
+        iconName: 'dashboard',
       },
     },
     {
       name: 'datasets',
       displayName: 'menu.datasets',
       meta: {
-        icon: 'vuestic-iconset-dashboard',
+        iconName: 'dataset',
       },
     },
     {
       name: 'users',
       displayName: 'menu.users',
       meta: {
-        icon: 'group',
+        iconName: 'group',
       },
     },
     {

@@ -14,10 +14,10 @@
           >
             <VaSidebarItemContent class="py-3 pr-2 pl-4">
               <VaIcon
-                v-if="route.meta.icon"
+                v-if="route.meta.iconName"
                 aria-hidden="true"
-                :name="route.meta.icon"
-                size="20px"
+                :name="route.meta.iconName"
+                size="25px"
                 :color="iconColor(route)"
               />
               <VaSidebarItemTitle class="flex justify-between items-center leading-5 font-semibold">
