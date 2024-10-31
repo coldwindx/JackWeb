@@ -1,4 +1,6 @@
 <template>
+  <h1 class="page-title">勒索检测</h1>
+
   <div class="container">
     <div class="steps">
       <div :class="['step', { completed: currentStep >= 1 }]" @click="setStep(1)">
@@ -65,7 +67,7 @@
 
 <script>
 export default {
-  name: 'DectPage',
+  name: 'DetectionPage',
   data() {
     return {
       currentStep: 4,
@@ -73,7 +75,6 @@ export default {
   },
   methods: {
     retest() {
-      console.log('重新测试')
       this.currentStep = 1
     },
     setStep(step) {

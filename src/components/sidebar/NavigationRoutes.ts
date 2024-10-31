@@ -39,6 +39,13 @@ export default {
         iconName: 'troubleshoot',
       },
     },
+    {
+      name: 'history',
+      displayName: 'menu.history',
+      meta: {
+        iconName: 'history',
+      },
+    },
 
     {
       name: 'projects',

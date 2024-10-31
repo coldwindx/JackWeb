@@ -17,20 +17,26 @@ const routes: Array<RouteRecordRaw> = [
     redirect: { name: 'dashboard' },
     children: [
       {
-        name: 'datasets',
-        path: 'datasets',
-        component: () => import('../pages/datasets/DatasetPage.vue'),
-      },
-      {
         name: 'dashboard',
         path: 'dashboard',
         component: () => import('../pages/admin/dashboard/Dashboard.vue'),
+      },
+      {
+        name: 'datasets',
+        path: 'datasets',
+        component: () => import('../pages/datasets/DatasetPage.vue'),
       },
       {
         name: 'detection',
         path: 'detection',
         component: () => import('../pages/detection/DetectionPage.vue'),
       },
+      {
+        name: 'history',
+        path: 'history',
+        component: () => import('../pages/history/HistoryPage.vue'),
+      },
+
       {
         name: 'settings',
         path: 'settings',
