@@ -22,7 +22,7 @@
               <template v-else>↓</template>
               {{ changeText }}
             </span>
-            since last month
+            同比上月
           </p>
         </div>
       </section>
