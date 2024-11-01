@@ -16,13 +16,7 @@
           </div>
           <div class="form-group">
             <label style="font-weight: bold; color: #154ec1">请选择数据集</label>
-            <select v-model="form.dataset">
-              <option value="UbuntuTraffic">UbuntuTraffic</option>
-              <option value="ISCXVPN2016">ISCXVPN2016</option>
-              <option value="ISCXTor2016">ISCXTor2016</option>
-              <option value="USTC-TFC2016">USTC-TFC2016</option>
-              <option value="CICIoT2022">CICIoT2022</option>
-            </select>
+            <VaSelect v-model="datasets" :options="options" multiple />
           </div>
 
           <div class="gauge-buttons">
@@ -79,6 +73,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import datasetDb from '../../data/pages/dataset-db.json'
 // 超参数设置
 const formInputs = [
   { label: '训练轮数', model: 'epochs', type: 'number' },
@@ -87,7 +82,10 @@ const formInputs = [
   { label: '基础学习率', model: 'learningRate', type: 'number', step: '0.001' },
   { label: '权重衰减系数', model: 'weightDecay', type: 'number', step: '0.01' },
   { label: '随机数种子', model: 'seed', type: 'number' },
+  { label: '模型保存', model: 'savename', type: 'string' },
 ]
+const options = datasetDb.map((d) => d.esindex)
+const datasets = ref(['kd5fee0c6f1d0d730de259c64e6373a0c'])
 const form = ref({
   epochs: 10,
   warmupEpochs: 0,
@@ -95,8 +93,10 @@ const form = ref({
   learningRate: 0.001,
   weightDecay: 0.05,
   seed: 0,
-  dataset: 'UbuntuTraffic',
+  savename: 'test_model.pth',
+  datasets: datasets,
 })
+
 const submitForm = (form) => {
   console.log('提交表单', form)
 }
@@ -110,6 +110,7 @@ const stopTraining = () => {
 }
 
 const resetForm = () => {
+  datasets.value = ['kd5fee0c6f1d0d730de259c64e6373a0c']
   form.value = {
     epochs: 10,
     warmupEpochs: 0,
@@ -118,7 +119,8 @@ const resetForm = () => {
     maskRatio: 0.9,
     weightDecay: 0.05,
     seed: 0,
-    dataset: 'UbuntuTraffic',
+    savename: 'test_model.pth',
+    datasets: datasets,
   }
 }
 

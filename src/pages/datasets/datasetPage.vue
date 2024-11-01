@@ -16,18 +16,22 @@
         <tr>
           <th>索引</th>
           <th>用户</th>
+          <th>邮箱</th>
           <th>时间</th>
           <th>描述</th>
-          <th>状态</th>
+          <!-- <th>状态</th> -->
         </tr>
       </thead>
       <tbody>
-        <tr v-for="data in records" :key="data.index">
-          <td>{{ data.index }}</td>
-          <td>{{ data.user }}</td>
+        <tr v-for="data in records" :key="data.esindex">
+          <td>{{ data.esindex }}</td>
+          <td>
+            <strong>{{ data.username }}</strong>
+          </td>
+          <td>{{ data.email }}</td>
           <td>{{ parseTime(data.timestamp) }}</td>
           <td>{{ data.description }}</td>
-          <td>{{ data.status }}</td>
+          <!-- <td>{{ data.status }}</td> -->
         </tr>
       </tbody>
     </table>

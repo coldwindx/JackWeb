@@ -19,19 +19,20 @@ export default {
       },
     },
     {
-      name: 'datasets',
-      displayName: 'menu.datasets',
-      meta: {
-        iconName: 'dataset',
-      },
-    },
-    {
       name: 'users',
       displayName: 'menu.users',
       meta: {
         iconName: 'group',
       },
     },
+    {
+      name: 'datasets',
+      displayName: 'menu.datasets',
+      meta: {
+        iconName: 'dataset',
+      },
+    },
+
     {
       name: 'detection',
       displayName: 'menu.detection',
@@ -60,12 +61,6 @@ export default {
         iconName: 'model_training',
       },
     },
-
-
-
-
-
-
 
     {
       name: 'projects',
