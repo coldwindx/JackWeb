@@ -1,7 +1,7 @@
 <template>
   <VaCard class="flex flex-col">
     <VaCardTitle class="flex items-center justify-between">
-      <h1 class="card-title text-secondary font-bold uppercase">Revenue by location</h1>
+      <h1 class="card-title text-secondary font-bold uppercase">地域分布</h1>
     </VaCardTitle>
     <VaCardContent class="flex-1 flex overflow-hidden">
       <VaAspectRatio class="w-full md:min-h-72 overflow-hidden relative flex items-center">

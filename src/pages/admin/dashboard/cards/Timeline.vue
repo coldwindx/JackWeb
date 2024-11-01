@@ -5,36 +5,29 @@ import VaTimelineItem from '../../../../components/va-timeline-item.vue'
 <template>
   <VaCard>
     <VaCardTitle class="flex justify-between">
-      <h1 class="card-title text-secondary font-bold uppercase">Timeline</h1>
+      <h1 class="card-title text-secondary font-bold uppercase">时间线</h1>
     </VaCardTitle>
     <VaCardContent>
       <table class="mt-4">
         <tbody>
           <VaTimelineItem date="25m ago">
-            <RouterLink class="va-link font-semibold" to="/users">Donald</RouterLink> updated the status of
-            <RouterLink class="va-link font-semibold" to="/users">Refund #1234</RouterLink> to awaiting customer
-            response
+            <RouterLink class="va-link font-semibold" to="/users">Donald</RouterLink> 进行勒索攻击检测
           </VaTimelineItem>
           <VaTimelineItem date="1h ago">
-            <RouterLink class="va-link font-semibold" to="/users">Lycy Peterson</RouterLink> was added to the group,
-            group name is Overtake
+            <RouterLink class="va-link font-semibold" to="/users">Lycy Peterson</RouterLink> 修改账号权限为管理员
           </VaTimelineItem>
           <VaTimelineItem date="2h ago">
-            <RouterLink class="va-link font-semibold" to="/users">Joseph Rust</RouterLink> opened new showcase
-            <RouterLink class="va-link font-semibold" to="/users">Mannat #112233</RouterLink> with theme market
+            <RouterLink class="va-link font-semibold" to="/users">Joseph Rust</RouterLink> 注销登录
           </VaTimelineItem>
           <VaTimelineItem date="3d ago">
-            <RouterLink class="va-link font-semibold" to="/users">Donald</RouterLink> updated the status to awaiting
-            customer response
+            <RouterLink class="va-link font-semibold" to="/users">Donald</RouterLink> 上传数据
+            <RouterLink class="va-link font-semibold" to="/datasets">kdeebbea18401e8b5e83c410c6d3a8b4e</RouterLink>
           </VaTimelineItem>
           <VaTimelineItem date="Nov 14, 2023">
-            <RouterLink class="va-link font-semibold" to="/users">Lycy Peterson</RouterLink> was added to the group
+            <RouterLink class="va-link font-semibold" to="/users">Lycy Peterson</RouterLink> 登录系统
           </VaTimelineItem>
           <VaTimelineItem date="Nov 14, 2023">
-            <RouterLink class="va-link font-semibold" to="/users">Dan Rya</RouterLink> was added to the group
-          </VaTimelineItem>
-          <VaTimelineItem date="Nov 15, 2023">
-            Project <RouterLink class="va-link font-semibold" to="/projects">Vuestic 2023</RouterLink> was created
+            <RouterLink class="va-link font-semibold" to="/users">Dan Rya</RouterLink> 登录系统
           </VaTimelineItem>
         </tbody>
       </table>

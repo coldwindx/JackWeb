@@ -29,8 +29,11 @@
           </div>
         </div>
       </section>
-      <RevenueReportChart class="w-2/3 md:w-3/5 lg:w-3/4 h-full min-h-72 sm:min-h-32 pt-4" :revenues="revenues"
-        :months="months" />
+      <RevenueReportChart
+        class="w-2/3 md:w-3/5 lg:w-3/4 h-full min-h-72 sm:min-h-32 pt-4"
+        :revenues="revenues"
+        :months="months"
+      />
     </VaCardContent>
   </VaCard>
 </template>
@@ -39,12 +42,7 @@
 import { ref } from 'vue'
 import { VaCard } from 'vuestic-ui'
 import RevenueReportChart from './RevenueReportChart.vue'
-import {
-  earningsColor,
-  expensesColor,
-  months,
-  generateRevenues,
-} from '../../../../data/charts/revenueChartData'
+import { earningsColor, expensesColor, months, generateRevenues } from '../../../../data/charts/revenueChartData'
 
 const revenues = generateRevenues(months)
 
@@ -58,5 +56,4 @@ const statistics = ref({
   loginThisMonth: 124,
   detectionThisMonth: 232,
 })
-
 </script>
