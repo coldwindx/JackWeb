@@ -61,26 +61,11 @@ export default {
         iconName: 'model_training',
       },
     },
-
-    {
-      name: 'faq',
-      displayName: 'menu.faq',
-      meta: {
-        icon: 'quiz',
-      },
-    },
     {
       name: '404',
       displayName: 'menu.404',
       meta: {
         icon: 'vuestic-iconset-files',
-      },
-    },
-    {
-      name: 'preferences',
-      displayName: 'menu.preferences',
-      meta: {
-        icon: 'manage_accounts',
       },
     },
     {
