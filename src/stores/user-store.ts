@@ -4,6 +4,7 @@ export const useUserStore = defineStore('user', {
   state: () => {
     return {
       userName: 'Vasili Savitski',
+      fullName: '朱林',
       email: 'vasili@gmail.com',
       memberSince: '8/12/2020',
       pfp: 'https://picsum.photos/id/22/200/300',
@@ -18,6 +19,10 @@ export const useUserStore = defineStore('user', {
 
     changeUserName(userName: string) {
       this.userName = userName
+    },
+
+    changeFullName(fullName: string) {
+      this.fullName = fullName
     },
   },
 })

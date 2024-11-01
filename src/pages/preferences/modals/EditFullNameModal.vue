@@ -8,9 +8,9 @@
     close-button
     @update:modelValue="emits('cancel')"
   >
-    <h1 class="va-h5 mb-4">修改昵称</h1>
+    <h1 class="va-h5 mb-4">修改姓名</h1>
     <VaForm ref="form" @submit.prevent="submit">
-      <VaInput v-model="Name" class="mb-4" label="昵称" placeholder="Name" />
+      <VaInput v-model="Name" class="mb-4" label="姓名" placeholder="Name" />
       <div class="flex flex-col-reverse md:flex-row md:items-center md:justify-end md:space-x-4">
         <VaButton :style="buttonStyles" preset="secondary" color="secondary" @click="emits('cancel')"> 取消</VaButton>
         <VaButton :style="buttonStyles" class="mb-4 md:mb-0" type="submit" @click="submit"> 保存</VaButton>
@@ -31,15 +31,15 @@ const { init } = useToast()
 
 const emits = defineEmits(['cancel'])
 
-const Name = ref<string>(store.userName)
+const Name = ref<string>(store.fullName)
 
 const submit = () => {
-  if (!Name.value || Name.value === store.userName) {
+  if (!Name.value || Name.value === store.fullName) {
     return emits('cancel')
   }
 
-  store.changeUserName(Name.value)
-  init({ message: '你成功修改个人昵称', color: 'success' })
+  store.changeFullName(Name.value)
+  init({ message: '你成功修改个人姓名', color: 'success' })
   emits('cancel')
 }
 </script>

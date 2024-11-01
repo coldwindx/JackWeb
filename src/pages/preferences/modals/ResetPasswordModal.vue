@@ -7,14 +7,14 @@
     close-button
     @update:modelValue="emits('cancel')"
   >
-    <h1 class="va-h5 mb-4">Reset password</h1>
+    <h1 class="va-h5 mb-4">重置密码</h1>
     <VaForm ref="form" class="space-y-6" @submit.prevent="submit">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <VaInput
           v-model="oldPassowrd"
           :rules="oldPasswordRules"
-          label="Old password"
-          placeholder="Old password"
+          label="旧密码"
+          placeholder="请输入旧密码"
           required-mark
           type="password"
         />
@@ -22,16 +22,16 @@
         <VaInput
           v-model="newPassword"
           :rules="newPasswordRules"
-          label="New password"
-          placeholder="New password"
+          label="新密码"
+          placeholder="请输入新密码"
           required-mark
           type="password"
         />
         <VaInput
           v-model="repeatNewPassword"
           :rules="repeatNewPasswordRules"
-          label="Repeat new password"
-          placeholder="Repeat new password"
+          label="重复密码"
+          placeholder="请再次输入新密码"
           required-mark
           type="password"
         />
@@ -41,18 +41,18 @@
           <div>
             <VaIcon :name="newPassword?.length! >= 8 ? 'mso-check' : 'mso-close'" color="secondary" size="20px" />
           </div>
-          <p>Must be at least 8 characters long</p>
+          <p>必须至少8个字符长</p>
         </div>
         <div class="flex space-x-2 items-center">
           <div>
             <VaIcon :name="new Set(newPassword).size >= 6 ? 'mso-check' : 'mso-close'" color="secondary" size="20px" />
           </div>
-          <p>Must contain at least 6 unique characters</p>
+          <p>必须包含至少6个唯一字符</p>
         </div>
       </div>
       <div class="flex flex-col-reverse md:justify-end md:flex-row md:space-x-4">
-        <VaButton :style="buttonStyles" preset="secondary" color="secondary" @click="emits('cancel')"> Cancel</VaButton>
-        <VaButton :style="buttonStyles" class="mb-4 md:mb-0" type="submit" @click="submit"> Update Password</VaButton>
+        <VaButton :style="buttonStyles" preset="secondary" color="secondary" @click="emits('cancel')"> 取消</VaButton>
+        <VaButton :style="buttonStyles" class="mb-4 md:mb-0" type="submit" @click="submit"> 保存</VaButton>
       </div>
     </VaForm>
   </VaModal>
