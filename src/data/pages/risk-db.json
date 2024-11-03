@@ -1,0 +1,135 @@
+[
+    {
+        "pid": 4544,
+        "pname": "WanaCry.exe",
+        "event": "ProcessStart",
+        "object": "attrib +h .",
+        "timestamp": 1728868923723
+    },
+    {
+        "pid": 4544,
+        "pname": "WanaCry.exe",
+        "event": "ProcessStart",
+        "object": "icacls . /grant Everyone:F /T /C /Q",
+        "timestamp": 1728868924158
+    },
+    {
+        "pid": 4172,
+        "pname": "icacls.exe",
+        "event": "ProcessStart",
+        "object": "\\??\\C:\\Windows\\system32\\conhost.exe 0xffffffff",
+        "timestamp": 1728868924238
+    },
+    {
+        "pid": 4544,
+        "pname": "WanaCry.exe",
+        "event": "ProcessStart",
+        "object": "taskdl.exe",
+        "timestamp": 1728868924238
+    },
+    {
+        "pid": 4544,
+        "pname": "WanaCry.exe",
+        "event": "ProcessStart",
+        "object": "C:\\Windows\\system32\\cmd.exe /c 4501705282403.bat",
+        "timestamp": 1728868925100
+    },
+    {
+        "pid": 4140,
+        "pname": "cmd.exe",
+        "event": "ProcessStart",
+        "object": "\\??\\C:\\Windows\\system32\\conhost.exe 0xffffffff",
+        "timestamp": 1728868925802
+    },
+    {
+        "pid": 600,
+        "pname": "svchost.exe",
+        "event": "ProcessStart",
+        "object": "C:\\Windows\\system32\\DllHost.exe /Processid:{AB8902B4-09CA-4BB6-B78D-A8F59079A8D5}",
+        "timestamp": 1728868926386
+    },
+    {
+        "pid": 4544,
+        "pname": "WanaCry.exe",
+        "event": "ProcessStart",
+        "object": "@WanaDecryptor@.exe co",
+        "timestamp": 1728868926711
+    },
+    {
+        "pid": 4544,
+        "pname": "WanaCry.exe",
+        "event": "ProcessStart",
+        "object": "cmd.exe /c start /b @WanaDecryptor@.exe vs",
+        "timestamp": 1728868927043
+    },
+    {
+        "pid": 4328,
+        "pname": "cmd.exe",
+        "event": "ProcessStart",
+        "object": "\\??\\C:\\Windows\\system32\\conhost.exe 0xffffffff",
+        "timestamp": 1728868927423
+    },
+    {
+        "pid": 4328,
+        "pname": "cmd.exe",
+        "event": "ProcessStart",
+        "object": "@WanaDecryptor@.exe  vs",
+        "timestamp": 1728868928359
+    },
+    {
+        "pid": 3428,
+        "pname": "@WanaDecryptor@.exe",
+        "event": "ProcessStart",
+        "object": "TaskData\\Tor\\taskhsvc.exe",
+        "timestamp": 1728868929275
+    },
+    {
+        "pid": 4572,
+        "pname": "taskhsvc.exe",
+        "event": "ProcessStart",
+        "object": "\\??\\C:\\Windows\\system32\\conhost.exe 0xffffffff",
+        "timestamp": 1728868930252
+    },
+    {
+        "pid": 892,
+        "pname": "unknown",
+        "event": "ProcessStart",
+        "object": "\\??\\C:\\Windows\\system32\\conhost.exe 0xffffffff",
+        "timestamp": 1728868930514
+    },
+    {
+        "pid": 4608,
+        "pname": "@WanaDecryptor@.exe",
+        "event": "ProcessStart",
+        "object": "cmd.exe /c vssadmin delete shadows /all /quiet & wmic shadowcopy delete & bcdedit /set {default} bootstatuspolicy ignoreallfailures & bcdedit /set {default} recoveryenabled no & wbadmin delete catalog -quiet",
+        "timestamp": 1728868931509
+    },
+    {
+        "pid": 892,
+        "pname": "cmd.exe",
+        "event": "ProcessStart",
+        "object": "vssadmin  delete shadows /all /quiet ",
+        "timestamp": 1728868932016
+    },
+    {
+        "pid": 516,
+        "pname": "services.exe",
+        "event": "ProcessStart",
+        "object": "C:\\Windows\\system32\\vssvc.exe",
+        "timestamp": 1728868932925
+    },
+    {
+        "pid": 892,
+        "pname": "cmd.exe",
+        "event": "ProcessStart",
+        "object": "wmic  shadowcopy delete ",
+        "timestamp": 1728868933713
+    },
+    {
+        "pid": 600,
+        "pname": "svchost.exe",
+        "event": "ProcessStart",
+        "object": "C:\\Windows\\sysWOW64\\wbem\\wmiprvse.exe -secured -Embedding",
+        "timestamp": 1728868933978
+    }
+]

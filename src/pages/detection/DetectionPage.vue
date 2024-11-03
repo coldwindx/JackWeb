@@ -23,7 +23,8 @@
 
     <div v-if="currentStep === 1" class="step-content">
       <h3>步骤1: 开始检测数据</h3>
-      <p>请上传并开始检测数据...</p>
+      <p>请选择并开始检测数据...</p>
+      <DatasetForm></DatasetForm>
     </div>
 
     <div v-if="currentStep === 2" class="step-content">
@@ -44,32 +45,48 @@
           <thead>
             <tr>
               <th>名称</th>
-              <th>label</th>
+              <th>结果</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>2022-11-08_11-11-15.pcap_TCP_10-128-214-124_30107_120-253-253-169_443</td>
-              <td class="label-malicious">malicious</td>
+              <td>kd5fee0c6f1d0d730de259c64e6373a0c_test_1</td>
+              <td>
+                <VaButton round color="danger" @click="openRiskForm">风险</VaButton>
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="result-confirmation">
         <div class="checkmark">✔</div>
-        <div class="confirmation-text">测试正确</div>
+        <div class="confirmation-text">测试结束</div>
         <div class="confirmation-subtext">该数据被判定为风险数据</div>
         <button class="retest-button" @click="retest">重新测试</button>
       </div>
     </div>
   </div>
+
+  <VaModal v-model="isRiskFormOpen" size="large" mobile-fullscreen close-button hide-default-actions>
+    <h1 class="va-h5">风险数据</h1>
+    <RiskForm />
+  </VaModal>
 </template>
 
 <script>
+import DatasetForm from './DatasetForm.vue'
+import RiskForm from './RiskForm.vue'
+
 export default {
   name: 'DetectionPage',
+  components: {
+    DatasetForm,
+    RiskForm,
+  },
   data() {
     return {
+      result: 0,
+      isRiskFormOpen: false,
       currentStep: 4,
     }
   },
@@ -79,6 +96,9 @@ export default {
     },
     setStep(step) {
       this.currentStep = step
+    },
+    openRiskForm() {
+      this.isRiskFormOpen = true
     },
   },
 }

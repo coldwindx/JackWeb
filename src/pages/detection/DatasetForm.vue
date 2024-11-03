@@ -16,6 +16,8 @@
     <VaChip class="ml-2">
       {{ selectedItemsEmitted.length }}
     </VaChip>
+
+    <VaButton class="inline-div" style="float: right" color="success"> 开始检测 </VaButton>
   </VaAlert>
 </template>
 
@@ -28,8 +30,8 @@ export default defineComponent({
   data() {
     const items = datasetDb
     const columns = [
-      { key: 'esindex', label: '名称', sortable: true },
-      { key: 'username', label: '用户', sortable: true },
+      { key: 'esindex', label: '索引', sortable: true },
+      { key: 'username', label: '昵称', sortable: true },
       { key: 'email', label: '邮箱' },
       { key: 'timestamp', label: '时间', sortable: true },
       { key: 'description', label: '描述' },
