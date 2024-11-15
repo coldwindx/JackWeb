@@ -32,7 +32,6 @@ export default {
         iconName: 'dataset',
       },
     },
-
     {
       name: 'detection',
       displayName: 'menu.detection',
