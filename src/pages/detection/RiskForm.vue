@@ -1,5 +1,5 @@
 <template>
-  <VaDataTable :items="items" :columns="columns">
+  <VaDataTable :items="risks" :columns="columns">
     <template #cell(timestamp)="{ value }">
       {{ formatTimestamp(value) }}
     </template>
@@ -9,24 +9,17 @@
 <script>
 import { defineComponent } from 'vue'
 import { parseTime } from '../../services/time.js'
-import riskDb from '../../data/pages/risk-db.json'
 
-export default defineComponent({
-  data() {
-    const items = riskDb
-
-    const columns = [
+const columns = [
       { key: 'pid', label: 'PID', sortable: true },
       { key: 'pname', label: '进程', sortable: true },
-      { key: 'event', label: '事件', sortable: true },
-      { key: 'object', label: '对象' },
+      { key: 'eventname', label: '事件', sortable: true },
+      { key: 'obj', label: '对象' },
       { key: 'timestamp', label: '时间', sortable: true },
-    ]
-
-    return {
-      items,
-      columns,
-    }
+];
+export default defineComponent({
+  props:{
+    risks: []
   },
   methods: {
     formatTimestamp(time) {

@@ -3,42 +3,33 @@
 
     <div class="container">
         <div class="steps">
-            <div :class="['step', { completed: currentStep >= 1 }]" @click="setStep(1)">
+            <div :class="['step', { completed: currentStep >= 1 }]">
                 <div class="circle">1</div>
                 <div class="label">步骤1<br />开始检测数据</div>
             </div>
-            <div :class="['step', { completed: currentStep >= 2 }]" @click="setStep(2)">
+            <div :class="['step', { completed: currentStep >= 2 }]">
                 <div class="circle">2</div>
-                <div class="label">步骤2<br />多源数据整合</div>
+                <div class="label">步骤2<br />勒索攻击检测</div>
             </div>
-            <div :class="['step', { completed: currentStep >= 3 }]" @click="setStep(3)">
+            <div :class="['step', { completed: currentStep >= 3 }]">
                 <div class="circle">3</div>
-                <div class="label">步骤3<br />勒索攻击检测</div>
-            </div>
-            <div :class="['step', { completed: currentStep >= 4 }]" @click="setStep(4)">
-                <div class="circle">4</div>
-                <div class="label">步骤4<br />获取结果并展示</div>
+                <div class="label">步骤3<br />获取结果并展示</div>
             </div>
         </div>
 
         <div v-if="currentStep === 1" class="step-content">
             <h3>步骤1: 开始检测数据</h3>
             <p>请选择并开始检测数据...</p>
-            <VaFileUpload v-model="files" dropzone file-types="json" @file-added="upload()" />
+            <VaFileUpload v-model="files" dropzone file-types="json" @file-added="upload()" :disabled="isUploadDisabled" />
         </div>
 
         <div v-if="currentStep === 2" class="step-content">
-            <h3>步骤2: 多源数据整合</h3>
-            <p>正在整合多源数据...</p>
+            <h3>步骤2: 勒索攻击检测</h3>
+            <p>正在检测勒索攻击，请勿离开...</p>
         </div>
 
         <div v-if="currentStep === 3" class="step-content">
-            <h3>步骤3: 勒索攻击检测</h3>
-            <p>正在检测勒索攻击...</p>
-        </div>
-
-        <div v-if="currentStep === 4" class="step-content">
-            <h3>步骤4: 获取结果并展示</h3>
+            <h3>步骤3: 获取结果并展示</h3>
             <div class="result-data">
                 <h3>测试数据</h3>
                 <table>
@@ -50,9 +41,9 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td>kd5fee0c6f1d0d730de259c64e6373a0c_test_1</td>
+                            <td>{{files[0].name}}</td>
                             <td>
-                                <VaButton round color="danger" @click="openRiskForm">风险</VaButton>
+                                <VaButton round :color="result ? 'danger' : 'success'" @click="openRiskForm">{{result ? "风险" : "安全"}}</VaButton>
                             </td>
                         </tr>
                     </tbody>
@@ -61,7 +52,7 @@
             <div class="result-confirmation">
                 <div class="checkmark">✔</div>
                 <div class="confirmation-text">测试结束</div>
-                <div class="confirmation-subtext">该数据被判定为风险数据</div>
+                <div class="confirmation-subtext">该数据被判定为{{result ? "风险" : "安全"}}数据</div>
                 <button class="retest-button" @click="retest">重新测试</button>
             </div>
         </div>
@@ -69,7 +60,7 @@
 
     <VaModal v-model="isRiskFormOpen" size="large" mobile-fullscreen close-button hide-default-actions>
         <h1 class="va-h5">风险数据</h1>
-        <RiskForm />
+        <RiskForm :risks="risks"/>
     </VaModal>
 </template>
   
@@ -88,38 +79,53 @@ export default {
     },
     data() {
         return {
-            result: 0,
             isRiskFormOpen: false,
-            currentStep: 4,
-            files: []
+            currentStep: 1,
+            files: [],
+            result: 0,
+            risks: [],
+            isUploadDisabled: false,
         }
     },
     methods: {
         retest() {
-            this.currentStep = 1
-        },
-        setStep(step) {
-            this.currentStep = step
+            this.files.length = 0;
+            this.risks.length = 0;
+            this.currentStep = 1;
         },
         openRiskForm() {
+            if(0 == this.result)
+                return
             this.isRiskFormOpen = true
         },
         async upload() {
-
+            this.isUploadDisabled = true;
             let formData = new FormData();
             formData.append('file', this.files[0])
 
-            try {
-                let resp = await axios.post('/api/upload', formData, { headers: headers });
-                // upload failure
-                if(0 < resp.data.code){
-                    console.error('uploading file fail:', resp.msg);
-                    return;
-                }
-                this.currentStep = 2
-            } catch (error) {
-                console.error('Error uploading file:', error);
+            let resp1 = await axios.post('/api/upload', formData, { headers: headers });
+            // upload failure
+            if(0 < resp1.data.code){
+                console.error('uploading file fail:', resp1.msg);
+                this.files.clear();
+                this.isUploadDisabled = false;
+                return;
             }
+
+            this.currentStep = 2
+            let resp2 = await axios.post('/api/detect', {"filename": resp1.data.data["file-path"]}, { headers: headers });
+            if(0 < resp2.data.code){
+                console.error('detecting file fail:', resp2.msg);
+                this.files.clear();
+                this.isUploadDisabled = false;
+                this.currentStep = 1;
+                return;
+            }
+            
+            this.risks = resp2.data.data;
+            this.result = 0 < this.risks.length ? 1 : 0;
+            this.currentStep = 3
+            this.isUploadDisabled = false;
         }
     },
 }

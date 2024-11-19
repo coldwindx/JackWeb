@@ -34,7 +34,7 @@ const routes: Array<RouteRecordRaw> = [
       {
         name: 'detect',
         path: 'detect',
-        component: () => import('../pages/detection/DetectPage.vue'),
+        component: () => import('../pages/detection/DetectPage.vue')
       },
       {
         name: 'history',
