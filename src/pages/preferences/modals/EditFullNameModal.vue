@@ -24,7 +24,8 @@ import { useUserStore } from '../../../stores/user-store'
 
 import { buttonStyles } from '../styles'
 import { useToast } from 'vuestic-ui'
-import { User } from '../../../entity/user';
+import { User } from '../../../entity/user'
+import axios from 'axios'
 
 const store = useUserStore()
 
@@ -32,14 +33,20 @@ const { init } = useToast()
 
 const emits = defineEmits(['cancel'])
 
-const user = ref<User>(store.user)
+const Name = ref<string>(store.user.fullname)
 
-const submit = () => {
-  if (!Name.value || Name.value === store.fullName) {
+const submit = async () => {
+  if (!Name.value || Name.value === store.user.fullname) {
     return emits('cancel')
   }
 
-  store.changeFullName(Name.value)
+  store.user.fullname = Name.value
+  const result = await axios.post('/api/user/update', store.user)
+  if (0 < result.data.code) {
+    init({ message: result.data.msg, color: 'danger' })
+    return
+  }
+
   init({ message: '你成功修改个人姓名', color: 'success' })
   emits('cancel')
 }

@@ -3,15 +3,16 @@ import { defineVaDataTableColumns, useModal } from 'vuestic-ui'
 import { User, UserRole } from '../types'
 import UserAvatar from './UserAvatar.vue'
 import { PropType, computed, toRef } from 'vue'
-import { Pagination, Sorting } from '../../../data/pages/users'
+// import { Pagination, Sorting } from '../../../data/pages/users'
 import { useVModel } from '@vueuse/core'
+import { Pagination, Sorting, queryUsers } from '../../../entity/user'
 
 const columns = defineVaDataTableColumns([
   { label: '姓名', key: 'fullname', sortable: true },
   { label: '邮箱', key: 'email', sortable: true },
   { label: '昵称', key: 'username', sortable: true },
   { label: '权限', key: 'role', sortable: true },
-  { label: ' ', key: 'actions', align: 'right' },
+  { label: '操作', key: 'actions', align: 'right' },
 ])
 
 const props = defineProps({

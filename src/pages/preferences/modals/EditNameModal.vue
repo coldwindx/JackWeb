@@ -20,10 +20,10 @@
 </template>
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { useUserStore } from '../../../stores/user-store'
-
 import { buttonStyles } from '../styles'
 import { useToast } from 'vuestic-ui'
+import { useUserStore } from '../../../stores/user-store'
+import axios from 'axios'
 
 const store = useUserStore()
 
@@ -31,14 +31,20 @@ const { init } = useToast()
 
 const emits = defineEmits(['cancel'])
 
-const Name = ref<string>(store.userName)
+const Name = ref<string>(store.user.username)
 
-const submit = () => {
-  if (!Name.value || Name.value === store.userName) {
+const submit = async () => {
+  if (!Name.value || Name.value === store.user.username) {
     return emits('cancel')
   }
 
-  store.changeUserName(Name.value)
+  store.user.username = Name.value
+  const result = await axios.post('/api/user/update', store.user)
+  if (0 < result.data.code) {
+    init({ message: result.data.msg, color: 'danger' })
+    return
+  }
+
   init({ message: '你成功修改个人昵称', color: 'success' })
   emits('cancel')
 }
