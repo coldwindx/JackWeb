@@ -40,6 +40,13 @@ export default {
       },
     },
     {
+      name: 'detect',
+      displayName: 'menu.detection',
+      meta: {
+        iconName: 'troubleshoot',
+      },
+    },
+    {
       name: 'history',
       displayName: 'menu.history',
       meta: {

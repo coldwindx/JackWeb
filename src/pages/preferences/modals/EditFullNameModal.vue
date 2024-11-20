@@ -24,6 +24,7 @@ import { useUserStore } from '../../../stores/user-store'
 
 import { buttonStyles } from '../styles'
 import { useToast } from 'vuestic-ui'
+import { User } from '../../../entity/user';
 
 const store = useUserStore()
 
@@ -31,7 +32,7 @@ const { init } = useToast()
 
 const emits = defineEmits(['cancel'])
 
-const Name = ref<string>(store.fullName)
+const user = ref<User>(store.user)
 
 const submit = () => {
   if (!Name.value || Name.value === store.fullName) {

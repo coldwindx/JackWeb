@@ -3,7 +3,7 @@
     <p class="font-bold w-[200px]">昵称</p>
     <div class="flex-1">
       <div class="max-w-[748px]">
-        {{ store.userName }}
+        {{ store.user.username }}
       </div>
     </div>
     <VaButton :style="buttonStyles" class="w-fit h-fit" preset="primary" @click="emits('openNameModal')">
@@ -14,7 +14,7 @@
     <p class="font-bold w-[200px]">姓名</p>
     <div class="flex-1">
       <div class="max-w-[748px]">
-        {{ store.fullName }}
+        {{ store.user.fullname }}
       </div>
     </div>
     <VaButton :style="buttonStyles" class="w-fit h-fit" preset="primary" @click="emits('openFullNameModal')">
@@ -26,7 +26,7 @@
     <p class="font-bold w-[200px]">邮箱</p>
     <div class="flex-1">
       <div class="max-w-[748px]">
-        {{ store.email }}
+        {{ store.user.email }}
       </div>
     </div>
   </div>
@@ -64,20 +64,17 @@
     </div>
   </div>
 </template>
+
 <script lang="ts" setup>
 import { computed } from 'vue'
-
 import { useToast } from 'vuestic-ui'
-
 import { useUserStore } from '../../../stores/user-store'
-
 import { buttonStyles } from '../styles'
-
 const store = useUserStore()
 
 const { init } = useToast()
 
-const toastMessage = computed(() => (store.is2FAEnabled ? '双因素身份验证已开启' : '双因素身份验证已关闭'))
+const toastMessage = computed(() => (store.user.is2FAEnabled ? '双因素身份验证已开启' : '双因素身份验证已关闭'))
 
 const twoFA = computed(() => {
   if (store.is2FAEnabled) {
