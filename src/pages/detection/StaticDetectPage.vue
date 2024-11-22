@@ -62,7 +62,7 @@
 
   <VaModal v-model="isRiskFormOpen" size="large" mobile-fullscreen close-button hide-default-actions>
     <h1 class="va-h5">风险数据</h1>
-    <RiskForm :risks="risks" />
+    <RiskForm :fileInfo="fileInfo"  />
   </VaModal>
 </template>
 
@@ -70,7 +70,9 @@
 import DatasetForm from './DatasetForm.vue'
 import RiskForm from './RiskForm.vue'
 import axios from 'axios'
+import { useToast } from 'vuestic-ui'
 
+const { init } = useToast()
 const headers = { 'Content-Type': 'multipart/form-data' }
 
 export default {
@@ -84,16 +86,16 @@ export default {
       isRiskFormOpen: false,
       currentStep: 1,
       files: [],
+      fileInfo: {"fileId":0},
       result: 0,
-      risks: [],
       isUploadDisabled: false,
     }
   },
   methods: {
     retest() {
       this.files.length = 0
-      this.risks.length = 0
       this.currentStep = 1
+      this.isUploadDisabled = false
     },
     openRiskForm() {
       if (0 == this.result) return
@@ -103,28 +105,23 @@ export default {
       this.isUploadDisabled = true
       const formData = new FormData()
       formData.append('file', this.files[0])
-      console.log(this.files)
-      const resp1 = await axios.post('/api/upload', formData, { headers: headers })
+
+      const respUpload = await axios.post('/api/upload', formData, { headers: headers })
       // upload failure
-      if (0 < resp1.data.code) {
-        console.error('uploading file fail:', resp1.msg)
-        this.files.length = 0
-        this.isUploadDisabled = false
-        return
+      if (0 < respUpload.data.code) {
+        init({ message: "文件上传失败：" + respUpload.data.msg, color: 'danger' })
+        return this.retest()
       }
+      this.fileInfo = respUpload.data.data
 
       this.currentStep = 2
-      const resp2 = await axios.post('/api/detect/static_detect', { fileId: resp1.data.data['id'] }, { headers: headers })
-      if (0 < resp2.data.code) {
-        console.error('detecting file fail:', resp2.msg)
-        this.files.length = 0
-        this.isUploadDisabled = false
-        this.currentStep = 1
-        return
+      const respDetect = await axios.post('/api/detect/static_detect', { fileId: respUpload.data.data['id'] }, { headers: headers })
+      if (0 < respDetect.data.code) {
+        init({ message: "文件检测失败：" + respUpload.data.msg, color: 'danger' })
+        return this.retest()
       }
 
-      this.risks = resp2.data.data
-      this.result = 0 < this.risks.length ? 1 : 0
+      this.result = respDetect.data.data
       this.currentStep = 3
       this.isUploadDisabled = false
     },
