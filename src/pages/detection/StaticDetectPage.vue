@@ -103,21 +103,21 @@ export default {
       this.isUploadDisabled = true
       const formData = new FormData()
       formData.append('file', this.files[0])
-
+      console.log(this.files)
       const resp1 = await axios.post('/api/upload', formData, { headers: headers })
       // upload failure
       if (0 < resp1.data.code) {
         console.error('uploading file fail:', resp1.msg)
-        this.files.clear()
+        this.files.length = 0
         this.isUploadDisabled = false
         return
       }
 
       this.currentStep = 2
-      const resp2 = await axios.post('/api/detect', { filename: resp1.data.data['file-path'] }, { headers: headers })
+      const resp2 = await axios.post('/api/detect/static_detect', { fileId: resp1.data.data['id'] }, { headers: headers })
       if (0 < resp2.data.code) {
         console.error('detecting file fail:', resp2.msg)
-        this.files.clear()
+        this.files.length = 0
         this.isUploadDisabled = false
         this.currentStep = 1
         return

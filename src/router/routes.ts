@@ -6,13 +6,13 @@ import RouteViewComponent from '../layouts/RouterBypass.vue'
 export const routes: Array<RouteRecordRaw> = [
   {
     path: '/:pathMatch(.*)*',
-    redirect: { name: 'detect' },
+    redirect: { name: 'static_detect' },
   },
   {
     name: 'admin',
     path: '/',
     component: AppLayout,
-    redirect: { name: 'detect' },
+    redirect: { name: 'static_detect' },
     children: [
       {
         name: 'dashboard',
@@ -25,14 +25,14 @@ export const routes: Array<RouteRecordRaw> = [
         component: () => import('../pages/datasets/DatasetPage.vue'),
       },
       {
-        name: 'detection',
-        path: 'detection',
-        component: () => import('../pages/detection/DetectionPage.vue'),
+        name: 'dynamic_detect',
+        path: 'dynamic_detect',
+        component: () => import('../pages/detection/DynamicDetectionPage.vue'),
       },
       {
-        name: 'detect',
-        path: 'detect',
-        component: () => import('../pages/detection/DetectPage.vue'),
+        name: 'static_detect',
+        path: 'static_detect',
+        component: () => import('../pages/detection/StaticDetectPage.vue'),
         meta: {
           roles: ['guest'],
         },

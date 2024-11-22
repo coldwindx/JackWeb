@@ -95,6 +95,7 @@
     "dashboard": "仪表板",
     "users": "用户管理",
     "detection": "勒索检测",
+    "static_detect": "勒索检测（静态）",
     "history": "历史记录",
     "tokenization": "构建词表",
     "training": "模型训练",

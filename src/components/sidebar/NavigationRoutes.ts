@@ -40,8 +40,8 @@ export default {
     //   },
     // },
     {
-      name: 'detect',
-      displayName: 'menu.detection',
+      name: 'static_detect',
+      displayName: 'menu.static_detect',
       meta: {
         iconName: 'troubleshoot',
       },
