@@ -53,7 +53,7 @@ export default {
   },
   data() {
     return {
-      currentStep: 3,
+      currentStep: 1,
       files: [],
       fileInfo: {
         id: 9,
