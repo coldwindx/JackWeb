@@ -11,7 +11,7 @@
 <script setup>
 import axios from 'axios'
 import { parseTime } from '../../services/time.js'
-import { defineProps, ref, computed, onMounted, watch } from 'vue'
+import { defineProps, ref, onMounted, watch } from 'vue'
 import { useToast } from 'vuestic-ui'
 
 const { init } = useToast()
@@ -37,9 +37,7 @@ const perPage = ref(10)
 
 watch(currentPage, async (newPage) => { risks.value = await query() }, { immediate: true });
 // 定义 Props
-const props = defineProps({ fileInfo: {} })
-const fileId = computed(() => props.fileInfo.fileId)
-
+const props = defineProps({ fileId: 0 })
 
 const formatTimestamp = (time) => {
   const EPOCH_AS_FILETIME = 11644473600 * 10000000;
@@ -47,7 +45,7 @@ const formatTimestamp = (time) => {
 }
 
 const count = async () => {
-  const resp = await axios.post('/api/risk/count', { condition: { fileId: fileId.value } })
+  const resp = await axios.post('/api/risk/count', { condition: { fileId: props.fileId } })
   if (0 < resp.data.code) {
     init({ message: resp.data.msg, color: 'danger' })
     return []
@@ -57,7 +55,7 @@ const count = async () => {
 const query = async () => {
   const resp = await axios.post('/api/risk/query',
     {
-      condition: { fileId: fileId.value },
+      condition: { fileId: props.fileId },
       limit: perPage.value,
       offset: (perPage.value * (currentPage.value - 1))
     })
