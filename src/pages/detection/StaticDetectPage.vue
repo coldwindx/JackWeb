@@ -3,32 +3,32 @@
 
   <div class="container">
     <div class="steps">
-      <div :class="['step', { completed: currentStep >= 1 }]">
+      <div :class="['step', { completed: step >= 1 }]">
         <div class="circle">1</div>
         <div class="label">步骤1<br />开始检测数据</div>
       </div>
-      <div :class="['step', { completed: currentStep >= 2 }]">
+      <div :class="['step', { completed: step >= 2 }]">
         <div class="circle">2</div>
         <div class="label">步骤2<br />勒索攻击检测</div>
       </div>
-      <div :class="['step', { completed: currentStep >= 3 }]">
+      <div :class="['step', { completed: step >= 3 }]">
         <div class="circle">3</div>
         <div class="label">步骤3<br />获取结果并展示</div>
       </div>
     </div>
 
-    <div v-if="currentStep === 1" class="step-content">
+    <div v-if="step === 1" class="step-content">
       <h3>步骤1: 开始检测数据</h3>
       <p>请选择并开始检测数据...</p>
       <FileUpload @afterUpload="afterUpload" />
     </div>
 
-    <div v-if="currentStep === 2" class="step-content">
+    <div v-if="step === 2" class="step-content">
       <h3>步骤2: 勒索攻击检测</h3>
       <p>正在检测勒索攻击，请勿离开...</p>
     </div>
 
-    <div v-if="currentStep === 3" class="step-content">
+    <div v-if="step === 3" class="step-content">
       <h3>步骤3: 获取结果并展示</h3>
       <DetectResult :fileInfo="fileInfo" :result="result" @reset="retest"/>
     </div>
@@ -53,7 +53,7 @@ export default {
   },
   data() {
     return {
-      currentStep: 1,
+      step: 1,
       files: [],
       fileInfo: {
         id: 9,
@@ -61,17 +61,17 @@ export default {
         savePath: "/tmp/tomcat-docbase.8001.13598271940526089678/a2cf19d6-f5c0-41e4-be4d-27a48603d282.json",
         uploadTime: 926857281504258
       },
-      result: 20
+      result: 50
     }
   },
   methods: {
     retest() {
       this.files.length = 0
-      this.currentStep = 1
+      this.step = 1
     },
     async afterUpload(fileInfo) {
       this.fileInfo = fileInfo
-      this.currentStep = 2
+      this.step = 2
 
       const respDetect = await axios.post('/api/detect/static_detect', { fileId: this.fileInfo.id }, { headers: headers })
       if (0 < respDetect.data.code) {
@@ -80,7 +80,7 @@ export default {
       }
 
       this.result = respDetect.data.data
-      this.currentStep = 3
+      this.step = 3
     }
   },
 }

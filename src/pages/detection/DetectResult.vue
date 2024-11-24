@@ -12,8 +12,8 @@
                 <tr>
                     <td>{{ props.fileInfo.originName }}</td>
                     <td>
-                        <VaButton round :color="props.result ? 'danger' : 'success'" @click="openRiskForm">{{
-                            props.result ? '风险' : '安全'
+                        <VaButton round :color="props.result === 51 ? 'danger' : 'success'" @click="openRiskForm">{{
+                            props.result === 51 ? '风险' : '安全'
                         }}</VaButton>
                     </td>
                 </tr>
@@ -23,7 +23,7 @@
     <div class="result-confirmation">
         <div class="checkmark">✔</div>
         <div class="confirmation-text">测试结束</div>
-        <div class="confirmation-subtext">该数据被判定为{{ props.result ? '风险' : '安全' }}数据</div>
+        <div class="confirmation-subtext">该数据被判定为{{ props.result == 51 ? '风险' : '安全' }}数据</div>
         <button class="retest-button" @click="reset">重新测试</button>
     </div>
 
@@ -37,7 +37,7 @@
 import { ref, defineProps, defineEmits } from 'vue';
 import RiskForm from './RiskForm.vue'
 
-const props = defineProps({ fileInfo: {}, result: 0 })
+const props = defineProps({ fileInfo: {}, result: 50 })
 const emits = defineEmits(["reset"])
 const isRiskFormOpen = ref(false)
 

@@ -34,7 +34,7 @@ const upload = async (file: File[]) => {
     // check hash in server
     const respHash = await axios.post('/api/file/query', { condition: { hash: hash } }).catch((err) => {
         init({ message: "文件上传失败，系统错误，请联系系统管理员!", color: 'danger' })
-        console.log(err)
+        return reset()
     })
     if (0 < respHash?.data.code) {
         init({ message: "文件上传失败：" + respHash?.data.msg, color: 'danger' })
