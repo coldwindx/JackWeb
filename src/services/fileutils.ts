@@ -19,7 +19,7 @@ export interface FileSlice {
     file: Blob
     hash: string
     chunkIndex: number
-    chunkCount: string
+    chunkTotal: number
     fileName: string
 }
 
