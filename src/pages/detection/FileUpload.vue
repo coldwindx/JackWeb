@@ -1,6 +1,8 @@
 <template>
     <VaFileUpload v-model="files" dropzone file-types="json" :disabled="isUploadDisabled" @file-added="upload" />
-    
+    <div class="progress-container" v-if="isUploadDisabled">
+        <VaProgressBar :model-value="percent" size="large" content-inside show-percent style="width: 80%;"/>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -8,7 +10,7 @@ import axios from 'axios';
 import { ref, defineEmits } from 'vue';
 import { useToast } from 'vuestic-ui'
 
-import { NewFileType, FileSlice, getFileMD5 } from '../../services/fileutils'
+import { FileSlice, getFileMD5 } from '../../services/fileutils'
 
 const { init } = useToast();
 
@@ -20,6 +22,9 @@ const headers = { 'Content-Type': 'multipart/form-data' };
 let chunkSize = 1024 * 1024 * 5
 const slices = ref<FileSlice[]>([])
 const promises: unknown[] = []
+const speep = ref<number>(0)
+const percent = ref<number>(0)
+
 
 // 回传父组件
 const emits = defineEmits(["afterUpload"])
@@ -27,40 +32,30 @@ const emits = defineEmits(["afterUpload"])
 const reset = () => {
     files.value.length = 0
     isUploadDisabled.value = false
+    slices.value.length = 0
+    promises.length = 0
 }
 
 const upload = async (files: File[]) => {
-    const file = files[0] as NewFileType
+    const file = files[0] as File
     isUploadDisabled.value = true
 
-    if(1024 * 1024 * 1024 < file.size){
+    if (1024 * 1024 * 1024 < file.size) {
         init({ message: "文件大小不得超过1GB!", color: 'danger' })
         reset()
         return;
     }
     const hash = await getFileMD5(file) as string
 
-    file.state = {
-        state_txt: 'load',
-        tips_txt: '处理中,请稍后'
-    }
-    file.hash = hash
-    file.progress = 0
-    file.speep = 0
-
     // 文件切片处理及跳过已上传分片
     await queryUploadSlice(file, hash)
     if (slices.length == 0) {
-        file.state = {
-            state_txt: 'success',
-            tips_txt: '上传成功！'
-        }
-        file.progress = 100
+        percent.value = 100
         return
     }
 
     // 循环调用切片上传
-    file.state.tips_txt = '上传中，请稍后'
+    speep.value = 100 / slices.value.length
     for (const slice of slices.value) {
         fileSliceUploadHandle(slice)
     }
@@ -92,6 +87,7 @@ const queryUploadSlice = async (file: File, hash: string) => {
                 chunkSize = chunkSize * 8
                 chunkTotal = Math.ceil(fileSize / chunkSize)
             }
+
             // split file to slices
             for (let i = 0; i < chunkTotal; i++) {
                 const startPoint = i * chunkSize
@@ -119,6 +115,7 @@ const queryUploadSlice = async (file: File, hash: string) => {
 // 文件切片上传
 const fileSliceUploadHandle = (fileChunk: FileSlice) => {
     const { chunkTotal, chunkIndex, file, fileName, hash } = fileChunk
+
     const formData = new FormData()
     formData.append('file', file)
     formData.append('filename', fileName)
@@ -132,18 +129,7 @@ const fileSliceUploadHandle = (fileChunk: FileSlice) => {
                 init({ message: "文件上传失败：" + res.data.msg, color: 'danger' })
                 return reset()
             }
-            const file = files.value[0] as NewFileType
-            file.speep = 100 / Number(chunkTotal)
-            file.progress += file.speep
-            if (file.progress > 100) {
-                file.progress = 100
-            }
-            if (Math.ceil(file.progress) >= 100) {
-                file.state = {
-                    state_txt: 'success',
-                    tips_txt: '上传成功！'
-                }
-            }
+            percent.value = Math.min(100, percent.value + speep.value)
             return resolve(true)
         }).catch((err) => {
             console.log(err)
@@ -155,7 +141,7 @@ const fileSliceUploadHandle = (fileChunk: FileSlice) => {
 }
 
 const mergeSlices = async (hash: string) => {
-    await axios.post('/api/slice/merge', {hash:hash})
+    await axios.post('/api/slice/merge', { hash: hash })
         .then((res) => {
             if (0 < res.data.code) {
                 init({ message: "文件合并失败：" + res.data.msg, color: 'danger' })
@@ -171,3 +157,12 @@ const mergeSlices = async (hash: string) => {
         })
 }
 </script>
+
+<style scoped>
+.progress-container {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    /* 使容器高度为视口高度 */
+}
+</style>

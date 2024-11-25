@@ -14,6 +14,7 @@ export interface NewFileType extends File {
     // 是否合并过
     isMerge?: boolean
 }
+
 // 分片文件列表
 export interface FileSlice {
     file: Blob
