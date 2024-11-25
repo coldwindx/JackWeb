@@ -1,5 +1,6 @@
 <template>
     <VaFileUpload v-model="files" dropzone file-types="json" :disabled="isUploadDisabled" @file-added="upload" />
+    
 </template>
 
 <script setup lang="ts">
@@ -31,6 +32,12 @@ const reset = () => {
 const upload = async (files: File[]) => {
     const file = files[0] as NewFileType
     isUploadDisabled.value = true
+
+    if(1024 * 1024 * 1024 < file.size){
+        init({ message: "文件大小不得超过1GB!", color: 'danger' })
+        reset()
+        return;
+    }
     const hash = await getFileMD5(file) as string
 
     file.state = {
@@ -58,41 +65,14 @@ const upload = async (files: File[]) => {
         fileSliceUploadHandle(slice)
     }
 
-    await Promise.all(promises).then(() => {
+    await Promise.all(promises).then(async () => {
         // 合并文件
-
-        init({ message: "文件上传成功!", color: 'success' })
+        await mergeSlices(hash)
     }).catch((err) => {
         console.log(err)
         init({ message: "文件上传失败，系统错误，请联系系统管理员!", color: 'danger' })
         reset()
     })
-
-    // 合并文件
-    await mergeSlices(hash)
-    return;
-    const respHash = await axios.post('/api/file/query', { condition: { hash: hash } }).catch(() => {
-        init({ message: "文件上传失败，系统错误，请联系系统管理员!", color: 'danger' })
-        return reset()
-    })
-    if (0 < respHash?.data.code) {
-        init({ message: "文件上传失败：" + respHash?.data.msg, color: 'danger' })
-        return reset()
-    }
-
-    if (0 == respHash?.data.data.length) {
-        const formData = new FormData()
-        formData.append('file', file[0])
-        formData.append('hash', hash)
-        const resp = await axios.post('/api/file/upload', formData, { headers: headers }).catch((err) => {
-            init({ message: "文件上传失败，系统错误，请联系系统管理员!", color: 'danger' })
-            console.log(err)
-        })
-        return emits("afterUpload", resp?.data.data)
-    }
-
-    // to detect log file
-    return emits("afterUpload", respHash?.data.data[0])
 }
 
 // 查询已上传的切片
@@ -181,6 +161,7 @@ const mergeSlices = async (hash: string) => {
                 init({ message: "文件合并失败：" + res.data.msg, color: 'danger' })
                 return reset()
             }
+            init({ message: "文件上传成功!", color: 'success' })
             return emits("afterUpload", res?.data.data)
         })
         .catch((err) => {
