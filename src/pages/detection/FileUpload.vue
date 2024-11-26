@@ -17,7 +17,7 @@ const { init } = useToast();
 const files = ref<File[]>([])
 const isUploadDisabled = ref(false)
 const headers = { 'Content-Type': 'multipart/form-data' };
-
+const isUploading = ref<Boolean>(false)
 // 分片上传
 let chunkSize = 1024 * 1024 * 5
 const slices = ref<FileSlice[]>([])
@@ -38,6 +38,7 @@ const reset = () => {
 
 const upload = async (files: File[]) => {
     const file = files[0] as File
+    isUploading.value = true
     isUploadDisabled.value = true
 
     if (1024 * 1024 * 1024 < file.size) {
@@ -49,25 +50,23 @@ const upload = async (files: File[]) => {
 
     // 文件切片处理及跳过已上传分片
     await queryUploadSlice(file, hash)
-    if (slices.length == 0) {
-        percent.value = 100
-        return
-    }
+    if(!isUploading.value) return;
 
+    if (slices.value.length == 0)
+        return percent.value = 100
     // 循环调用切片上传
     speep.value = 100 / slices.value.length
-    for (const slice of slices.value) {
-        fileSliceUploadHandle(slice)
-    }
+    slices.value.forEach((slice)=>fileSliceUploadHandle(slice))
 
     await Promise.all(promises).then(async () => {
         // 合并文件
         await mergeSlices(hash)
     }).catch((err) => {
         console.log(err)
-        init({ message: "文件上传失败，系统错误，请联系系统管理员!", color: 'danger' })
+        init({ message: "服务器内部错误!", color: 'danger' })
         reset()
     })
+    return isUploading.value = false;
 }
 
 // 查询已上传的切片
@@ -76,6 +75,7 @@ const queryUploadSlice = async (file: File, hash: string) => {
         .then((res) => {
             if (0 < res.data.code) {
                 init({ message: "文件上传失败：" + res.data.msg, color: 'danger' })
+                isUploading.value = false
                 return reset()
             }
             let uploadSliceIndexs = res.data.data.map((item: { chunkIndex: any; }) => item.chunkIndex);
@@ -107,7 +107,8 @@ const queryUploadSlice = async (file: File, hash: string) => {
         })
         .catch((err) => {
             console.log(err)
-            init({ message: "文件上传失败，系统错误，请联系系统管理员!", color: 'danger' })
+            init({ message: "服务器内部错误!", color: 'danger' })
+            isUploading.value = false
             reset()
         })
 }
@@ -127,13 +128,13 @@ const fileSliceUploadHandle = (fileChunk: FileSlice) => {
         axios.post("/api/slice/upload", formData, { headers: headers }).then(res => {
             if (0 < res.data.code) {
                 init({ message: "文件上传失败：" + res.data.msg, color: 'danger' })
-                return reset()
+                return (isUploading.value = false) && reset()
             }
             percent.value = Math.min(100, percent.value + speep.value)
             return resolve(true)
         }).catch((err) => {
             console.log(err)
-            init({ message: "文件上传失败，系统错误，请联系系统管理员!", color: 'danger' })
+            init({ message: "服务器内部错误!", color: 'danger' })
             reset()
         })
     })
@@ -152,7 +153,7 @@ const mergeSlices = async (hash: string) => {
         })
         .catch((err) => {
             console.log(err)
-            init({ message: "文件上传失败，系统错误，请联系系统管理员!", color: 'danger' })
+            init({ message: "服务器内部错误!", color: 'danger' })
             reset()
         })
 }
