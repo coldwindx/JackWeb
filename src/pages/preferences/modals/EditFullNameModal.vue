@@ -24,7 +24,6 @@ import { useUserStore } from '../../../stores/user-store'
 
 import { buttonStyles } from '../styles'
 import { useToast } from 'vuestic-ui'
-import { User } from '../../../entity/user'
 import axios from 'axios'
 
 const store = useUserStore()

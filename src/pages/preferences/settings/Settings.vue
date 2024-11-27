@@ -77,7 +77,7 @@ const { init } = useToast()
 const toastMessage = computed(() => (store.user.is2FAEnabled ? '双因素身份验证已开启' : '双因素身份验证已关闭'))
 
 const twoFA = computed(() => {
-  if (store.is2FAEnabled) {
+  if (store.user.is2FAEnabled) {
     return {
       color: 'danger',
       button: '关闭',
@@ -93,7 +93,7 @@ const twoFA = computed(() => {
 })
 
 const toggle2FA = () => {
-  store.toggle2FA()
+  store.user.is2FAEnabled = !store.user.is2FAEnabled
   init({ message: toastMessage.value, color: 'success' })
 }
 

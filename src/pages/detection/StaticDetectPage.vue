@@ -30,7 +30,7 @@
 
     <div v-if="step === 3" class="step-content">
       <h3>步骤3: 获取结果并展示</h3>
-      <DetectResult :fileInfo="fileInfo" :result="result" @reset="retest"/>
+      <DetectResult :file-info="fileInfo" :result="result" @reset="retest" />
     </div>
   </div>
 </template>
@@ -49,7 +49,7 @@ export default {
   name: 'DetectionPage',
   components: {
     FileUpload,
-    DetectResult
+    DetectResult,
   },
   data() {
     return {
@@ -57,11 +57,11 @@ export default {
       files: [],
       fileInfo: {
         id: 9,
-        originName: "sample.json",
-        savePath: "/tmp/tomcat-docbase.8001.13598271940526089678/a2cf19d6-f5c0-41e4-be4d-27a48603d282.json",
-        uploadTime: 926857281504258
+        originName: 'sample.json',
+        savePath: '/tmp/tomcat-docbase.8001.13598271940526089678/a2cf19d6-f5c0-41e4-be4d-27a48603d282.json',
+        uploadTime: 926857281504258,
       },
-      result: 50
+      result: 50,
     }
   },
   methods: {
@@ -73,15 +73,19 @@ export default {
       this.fileInfo = fileInfo
       this.step = 2
 
-      const respDetect = await axios.post('/api/detect/static_detect', { fileId: this.fileInfo.id }, { headers: headers })
+      const respDetect = await axios.post(
+        '/api/detect/static_detect',
+        { fileId: this.fileInfo.id },
+        { headers: headers },
+      )
       if (0 < respDetect.data.code) {
-        init({ message: "文件检测失败：" + respDetect.data.msg, color: 'danger' })
+        init({ message: '文件检测失败：' + respDetect.data.msg, color: 'danger' })
         return this.retest()
       }
 
       this.result = respDetect.data.data
       this.step = 3
-    }
+    },
   },
 }
 </script>

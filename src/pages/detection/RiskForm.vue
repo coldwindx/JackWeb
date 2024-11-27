@@ -4,8 +4,13 @@
       {{ formatTimestamp(value) }}
     </template>
   </VaDataTable>
-  <VaPagination v-model="currentPage" class="mb-3 justify-center sm:justify-content-end" :pages="totalPage" input
-    buttons-preset="default" />
+  <VaPagination
+    v-model="currentPage"
+    class="mb-3 justify-center sm:justify-content-end"
+    :pages="totalPage"
+    input
+    buttons-preset="default"
+  />
 </template>
 
 <script setup>
@@ -19,7 +24,7 @@ const { init } = useToast()
 // 在组件挂载时调用查询函数
 const risks = ref([])
 onMounted(async () => {
-  totalPage.value = Math.ceil(await count() / perPage.value)
+  totalPage.value = Math.ceil((await count()) / perPage.value)
   risks.value = await query()
 })
 
@@ -35,12 +40,18 @@ const currentPage = ref(1)
 const totalPage = ref(1)
 const perPage = ref(10)
 
-watch(currentPage, async (newPage) => { risks.value = await query() }, { immediate: true });
+watch(
+  currentPage,
+  async () => {
+    risks.value = await query()
+  },
+  { immediate: true },
+)
 // 定义 Props
-const props = defineProps({ fileId: 0 })
+const props = defineProps({ fileId: { type: Number, default: 0 } })
 
 const formatTimestamp = (time) => {
-  const EPOCH_AS_FILETIME = 11644473600 * 10000000;
+  const EPOCH_AS_FILETIME = 11644473600 * 10000000
   return parseTime((time - EPOCH_AS_FILETIME) / 10000, '{y}-{m}-{d} {h}:{i}:{s}')
 }
 
@@ -53,12 +64,11 @@ const count = async () => {
   return resp.data.data
 }
 const query = async () => {
-  const resp = await axios.post('/api/risk/query',
-    {
-      condition: { fileId: props.fileId },
-      limit: perPage.value,
-      offset: (perPage.value * (currentPage.value - 1))
-    })
+  const resp = await axios.post('/api/risk/query', {
+    condition: { fileId: props.fileId },
+    limit: perPage.value,
+    offset: perPage.value * (currentPage.value - 1),
+  })
   if (0 < resp.data.code) {
     init({ message: resp.data.msg, color: 'danger' })
     return []
