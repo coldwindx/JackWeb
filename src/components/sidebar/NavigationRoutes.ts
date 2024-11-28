@@ -18,13 +18,13 @@ export default {
     //     iconName: 'dashboard',
     //   },
     // },
-    // {
-    //   name: 'users',
-    //   displayName: 'menu.users',
-    //   meta: {
-    //     iconName: 'group',
-    //   },
-    // },
+    {
+      name: 'users',
+      displayName: 'menu.users',
+      meta: {
+        iconName: 'group',
+      },
+    },
     // {
     //   name: 'datasets',
     //   displayName: 'menu.datasets',

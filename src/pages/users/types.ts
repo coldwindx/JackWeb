@@ -1,13 +1,12 @@
 export type UserRole = 'admin' | 'user' | 'owner'
 
-export type BaseUser = {
-  id: number
-  fullname: string
-  email: string
-  username: string
-  role: UserRole
-  avatar: string
-  active: boolean
+export type User = {
+  id: number;
+  fullname: string;
+  password: string;
+  email: string;
+  username: string;
+  roles: number;
+  avatar: string;
+  activate: number;
 }
-
-export type User = BaseUser

@@ -1,130 +1,145 @@
-<script setup lang="ts">
-// import { ref } from 'vue'
-// import UsersTable from './widgets/UsersTable.vue'
-// import EditUserForm from './widgets/EditUserForm.vue'
-// import { User } from './types'
-// import { useUsers } from './composables/useUsers'
-// import { useModal, useToast } from 'vuestic-ui'
-
-// const doShowEditUserModal = ref(false)
-// const { users, isLoading, filters, sorting, pagination, ...usersApi } = useUsers()
-// const userToEdit = ref<User | null>(null)
-
-// const showEditUserModal = (user: User) => {
-//   userToEdit.value = user
-//   doShowEditUserModal.value = true
-// }
-
-// const showAddUserModal = () => {
-//   userToEdit.value = null
-//   doShowEditUserModal.value = true
-// }
-
-// const { init: notify } = useToast()
-
-// const onUserSaved = async (user: User) => {
-//   if (userToEdit.value) {
-//     await usersApi.update(user)
-//     notify({
-//       message: `${user.fullname}已被修改`,
-//       color: 'success',
-//     })
-//   } else {
-//     usersApi.add(user)
-//     notify({
-//       message: `${user.fullname}已被创建`,
-//       color: 'success',
-//     })
-//   }
-// }
-
-// const onUserDelete = async (user: User) => {
-//   await usersApi.remove(user)
-//   notify({
-//     message: `${user.fullname}已被删除`,
-//     color: 'success',
-//   })
-// }
-
-// const editFormRef = ref()
-
-// const { confirm } = useModal()
-
-// const beforeEditFormModalClose = async (hide: () => unknown) => {
-//   if (editFormRef.value.isFormHasUnsavedChanges) {
-//     const agreed = await confirm({
-//       maxWidth: '380px',
-//       message: '表单有未保存的更改，你确定要关闭吗？',
-//       size: 'small',
-//     })
-//     if (agreed) {
-//       hide()
-//     }
-//   } else {
-//     hide()
-//   }
-// }
-</script>
-
 <template>
   <h1 class="page-title">用户管理</h1>
-  <!-- 
+
   <VaCard>
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
-        <div class="flex flex-col md:flex-row gap-2 justify-start">
-          <VaButtonToggle
-            v-model="filters.isActive"
-            color="background-element"
-            border-color="background-element"
-            style="width: 200px"
-            :options="[
-              { label: '活跃', value: true },
-              { label: '离线', value: false },
-            ]"
-          />
-          <VaInput v-model="filters.search" placeholder="Search">
-            <template #prependInner>
-              <VaIcon name="search" color="secondary" size="small" />
-            </template>
-          </VaInput>
-        </div>
-        <VaButton @click="showAddUserModal">新增用户</VaButton>
+        <VaDataTable :items="users" :columns="columns">
+          <template #cell(fullname)="{ rowData }">
+            <div class="flex items-center gap-2 max-w-[230px] ellipsis">
+              <UserAvatar :user="rowData" size="small" />
+              {{ rowData.fullname }}
+            </div>
+          </template>
+
+          <template #cell(username)="{ value }">
+            <div class="max-w-[120px] ellipsis">
+              {{ value }}
+            </div>
+          </template>
+
+          <template #cell(email)="{ value }">
+            <div class="ellipsis max-w-[230px]">
+              {{ value }}
+            </div>
+          </template>
+
+          <!-- <template #cell(role)="{ rowData }">
+              <VaBadge :text="rowData.role" :color="roleColors[rowData.role]" />
+            </template> -->
+
+          <template #cell(actions)="{ rowData }">
+            <div class="flex gap-2 justify-left">
+              <VaButton preset="primary" size="small" icon="mso-edit" aria-label="Edit user"
+                @click="onEdit(rowData as User)" />
+              <VaButton preset="primary" size="small" icon="mso-delete" color="danger" aria-label="Delete user"
+                @click="onDelete(rowData as User)" />
+            </div>
+          </template>
+        </VaDataTable>
       </div>
 
-      <UsersTable
-        v-model:sort-by="sorting.sortBy"
-        v-model:sorting-order="sorting.sortingOrder"
-        :users="users"
-        :loading="isLoading"
-        :pagination="pagination"
-        @editUser="showEditUserModal"
-        @deleteUser="onUserDelete"
-      />
     </VaCardContent>
   </VaCard>
 
-  <VaModal
-    v-slot="{ cancel, ok }"
-    v-model="doShowEditUserModal"
-    size="small"
-    mobile-fullscreen
-    close-button
-    hide-default-actions
-    :before-cancel="beforeEditFormModalClose"
-  >
-    <h1 class="va-h5">{{ userToEdit ? '修改信息' : '新增用户' }}</h1>
-    <EditUserForm
-      ref="editFormRef"
-      :user="userToEdit"
-      :save-button-label="userToEdit ? '保存' : '添加'"
-      @close="cancel"
-      @save="
-        (user) => {
-          onUserSaved(user)
-          ok()
-        }
-      "
-    />
-  </VaModal> -->
+
+  <div class="flex flex-col-reverse md:flex-row gap-2 justify-between items-center py-2">
+    <div>
+      <b>{{ total }} results.</b>
+      Results per page
+      <VaSelect v-model="limit" class="!w-20" :options="[10, 20, 50, 100]" @update:model-value="changeLimit" />
+    </div>
+
+    <div class="flex">
+      <VaButton preset="secondary" icon="va-arrow-left" aria-label="Previous page" :disabled="page === 0"
+        @click="page--" />
+      <VaPagination v-model="page" buttons-preset="secondary" :pages="total" :visible-pages="5" :boundary-links="false"
+        :direction-links="false" />
+      <VaButton class="mr-2" preset="secondary" icon="va-arrow-right" aria-label="Next page"
+        :disabled="page === total - 1" @click="page++" />
+    </div>
+  </div>
+
+  <VaModal v-slot="{ cancel, ok }" v-model="isShowDialog" size="small" mobile-fullscreen close-button
+    hide-default-actions>
+    <h1 class="va-h5">'修改信息'</h1>
+    <EditUserForm :user="userToEdit" @close="cancel" @save="save" />
+  </VaModal>
 </template>
+
+<script setup lang="ts">
+import { onMounted } from 'vue';
+import { ref } from 'vue'
+import { defineVaDataTableColumns, useToast } from 'vuestic-ui'
+import { api } from '../../services/api';
+import { User } from './types'
+
+import UserAvatar from './widgets/UserAvatar.vue';
+import EditUserForm from './widgets/EditUserForm.vue'
+
+const { init: notify } = useToast()
+// data
+const columns = defineVaDataTableColumns([
+  { label: '姓名', key: 'fullname' },
+  { label: '邮箱', key: 'email' },
+  { label: '昵称', key: 'username' },
+  // { label: '权限', key: 'role', sortable: true },
+  { label: '操作', key: 'actions', align: 'center' },
+])
+
+const users = ref<User[]>([])
+
+onMounted(async () => {
+  let count = await api.post("/api/user/count", { condition: condition.value }) as number
+  total.value = Math.ceil(count / limit.value)
+  users.value = await query() as User[]
+})
+// 查询用户
+const condition = ref({
+  id: 0,
+  fullname: "",
+  password: "",
+  email: "",
+  username: "",
+  roles: 0,
+  avatar: "",
+  activate: 0
+})
+const total = ref<number>(0)
+const page = ref<number>(0)
+const limit = ref<number>(20)
+
+const query = () => {
+  return api.post("/api/user/query", {
+    condition: condition.value,
+    offset: page.value * limit.value,
+    limit: limit.value
+  })
+}
+
+const changeLimit = async () => {
+  let count = await api.post("/api/user/count", { condition: condition.value }) as number
+  total.value = Math.ceil(count / limit.value)
+  users.value = await query() as User[]
+}
+// 编辑用户
+const isShowDialog = ref<boolean | undefined>(false)
+const userToEdit = ref<User | null | undefined>(null)
+const onEdit = (user: User | undefined) => {
+  userToEdit.value = user
+  isShowDialog.value = true
+}
+const save = async () => {
+  users.value = await api.post("/api/user/query", { condition: condition.value }) as User[]
+  isShowDialog.value = false
+}
+
+// 删除用户
+const onDelete = (user: User) => {
+  api.post("/api/user/delete", user).then(async () => {
+    notify({ message: `${user.fullname}已被删除`, color: 'success' })
+    users.value = await api.post("/api/user/query", { condition: condition.value }) as User[]
+  })
+}
+
+</script>
