@@ -17,7 +17,6 @@ export type Pagination = {
   total: number
 }
 
-
 export type Sorting = {
   sortBy: keyof User | undefined
   sortingOrder: 'asc' | 'desc' | null
@@ -28,10 +27,10 @@ export type Filters = {
   search: string
 }
 
-import axios from 'axios';
+import axios from 'axios'
 
 export const queryUsers = async (filters: Partial<Filters & Pagination & Sorting>) => {
-  const { page = 1, perPage = 10, total = 0, sortBy, sortingOrder, isActive, search } = filters;
+  const { page = 1, perPage = 10, total = 0, sortBy, sortingOrder, isActive, search } = filters
 
   const params = {
     page,
@@ -40,8 +39,8 @@ export const queryUsers = async (filters: Partial<Filters & Pagination & Sorting
     sortBy: sortBy || '',
     sortingOrder: sortingOrder || '',
     isActive: isActive ? 1 : 0,
-    search: search || ''
-  };
+    search: search || '',
+  }
 
   console.log(params)
   // @Data
@@ -49,10 +48,10 @@ export const queryUsers = async (filters: Partial<Filters & Pagination & Sorting
   //     private T condition;
   //     private int offset = 0;
   //     private int limit = 20;
-  
+
   //     public QueryParam(){
   //     }
-  
+
   //     public QueryParam(T condition){
   //         this.condition = condition;
   //     }
@@ -66,7 +65,6 @@ export const queryUsers = async (filters: Partial<Filters & Pagination & Sorting
   //   throw error;
   // }
 }
-
 
 export const getUsers = async (filters: Partial<Filters & Pagination & Sorting>) => {
   await sleep(1000)

@@ -4,62 +4,50 @@
     <VaCardContent class="chat-box">
       <div v-for="(message, index) in messages" :key="index" :class="['message', message.sender]">
         <!-- 图标 -->
-        <img
-          v-if="message.sender === 'ai'"
-          :src="'../../../public/trace-icon.svg'"
-          alt="AI Icon"
-          class="icon"
-        />
+        <img v-if="message.sender === 'ai'" :src="'../../../public/trace-icon.svg'" alt="AI Icon" class="icon" />
         <!-- 消息内容 -->
-        <img v-if="message.image" :src="message.image" alt="AI Image" class="message-image"/>
+        <img v-if="message.image" :src="message.image" alt="AI Image" class="message-image" />
         {{ message.text }}
       </div>
     </VaCardContent>
 
     <!-- 输入框和发送按钮 -->
     <div class="input-container">
-      <VaInput
-        v-model="newMessage"
-        placeholder="输入消息..."
-        class="input-field"
-        @keypress.enter="sendMessage"
-      />
+      <VaInput v-model="newMessage" placeholder="输入消息..." class="input-field" @keypress.enter="sendMessage" />
       <VaButton color="primary" @click="sendMessage">发送</VaButton>
     </div>
-
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue'
 
 // 定义响应式数据
-const newMessage = ref(""); // 用户输入的消息
+const newMessage = ref('') // 用户输入的消息
 const messages = ref([
-  { sender: "ai", image: "E:/workspace/JackWeb/public/round-table.gv.png" },
-  { sender: "ai", text: "你好！我是AI助手，有什么可以帮你的吗？"},
-]); // 聊天记录
+  { sender: 'ai', image: 'E:/workspace/JackWeb/public/round-table.gv.png' },
+  { sender: 'ai', text: '你好！我是AI助手，有什么可以帮你的吗？' },
+]) // 聊天记录
 
 // 发送消息方法
 function sendMessage() {
-  if (newMessage.value.trim() === "") return;
+  if (newMessage.value.trim() === '') return
 
   // 添加用户消息
-  messages.value.push({ sender: "user", text: newMessage.value });
+  messages.value.push({ sender: 'user', text: newMessage.value })
 
   // 模拟 AI 回复
   setTimeout(() => {
-    const aiResponse = `你刚刚说：${newMessage.value}`;
-    messages.value.push({ sender: "ai", text: aiResponse });
-  }, 500);
+    const aiResponse = `你刚刚说：${newMessage.value}`
+    messages.value.push({ sender: 'ai', text: aiResponse })
+  }, 500)
 
   // 清空输入框
-  newMessage.value = "";
+  newMessage.value = ''
 }
 </script>
 
 <style scoped>
-
 .chat-container {
   display: flex;
   flex-direction: column;

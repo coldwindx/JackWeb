@@ -17,7 +17,16 @@ export const useUserStore = defineStore('user', {
     },
   }),
   persist: {
-    pick: ['user.id', 'user.fullname', 'user.password','user.email', 'user.username', 'user.roles', 'user.avatar', 'user.is2FAEnabled'],
+    pick: [
+      'user.id',
+      'user.fullname',
+      'user.password',
+      'user.email',
+      'user.username',
+      'user.roles',
+      'user.avatar',
+      'user.is2FAEnabled',
+    ],
   },
   // 相当于计算属性(有数据缓存)
   getters: {

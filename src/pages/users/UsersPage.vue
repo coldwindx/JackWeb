@@ -73,11 +73,16 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
     <VaCardContent>
       <div class="flex flex-col md:flex-row gap-2 mb-2 justify-between">
         <div class="flex flex-col md:flex-row gap-2 justify-start">
-          <VaButtonToggle v-model="filters.isActive" color="background-element" border-color="background-element"
-            style="width: 200px" :options="[
+          <VaButtonToggle
+            v-model="filters.isActive"
+            color="background-element"
+            border-color="background-element"
+            style="width: 200px"
+            :options="[
               { label: '活跃', value: true },
               { label: '离线', value: false },
-            ]" />
+            ]"
+          />
           <VaInput v-model="filters.search" placeholder="Search">
             <template #prependInner>
               <VaIcon name="search" color="secondary" size="small" />
@@ -87,19 +92,39 @@ const beforeEditFormModalClose = async (hide: () => unknown) => {
         <VaButton @click="showAddUserModal">新增用户</VaButton>
       </div>
 
-      <UsersTable v-model:sort-by="sorting.sortBy" v-model:sorting-order="sorting.sortingOrder" :users="users"
-        :loading="isLoading" :pagination="pagination" @editUser="showEditUserModal" @deleteUser="onUserDelete" />
+      <UsersTable
+        v-model:sort-by="sorting.sortBy"
+        v-model:sorting-order="sorting.sortingOrder"
+        :users="users"
+        :loading="isLoading"
+        :pagination="pagination"
+        @editUser="showEditUserModal"
+        @deleteUser="onUserDelete"
+      />
     </VaCardContent>
   </VaCard>
 
-  <VaModal v-slot="{ cancel, ok }" v-model="doShowEditUserModal" size="small" mobile-fullscreen close-button
-    hide-default-actions :before-cancel="beforeEditFormModalClose">
+  <VaModal
+    v-slot="{ cancel, ok }"
+    v-model="doShowEditUserModal"
+    size="small"
+    mobile-fullscreen
+    close-button
+    hide-default-actions
+    :before-cancel="beforeEditFormModalClose"
+  >
     <h1 class="va-h5">{{ userToEdit ? '修改信息' : '新增用户' }}</h1>
-    <EditUserForm ref="editFormRef" :user="userToEdit" :save-button-label="userToEdit ? '保存' : '添加'" @close="cancel"
-      @save="(user) => {
+    <EditUserForm
+      ref="editFormRef"
+      :user="userToEdit"
+      :save-button-label="userToEdit ? '保存' : '添加'"
+      @close="cancel"
+      @save="
+        (user) => {
           onUserSaved(user)
           ok()
         }
-        " />
+      "
+    />
   </VaModal>
 </template>

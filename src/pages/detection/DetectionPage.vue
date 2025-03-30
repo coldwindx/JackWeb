@@ -53,7 +53,7 @@
               <td>kd5fee0c6f1d0d730de259c64e6373a0c_test_1</td>
               <td>
                 <VaButton round color="danger" @click="openRiskForm">风险</VaButton>
-                <span style="width: 20px; display: inline-block;"></span>
+                <span style="width: 20px; display: inline-block"></span>
                 <VaButton round @click="openTraceForm">智能分析</VaButton>
               </td>
             </tr>
@@ -89,7 +89,7 @@ export default {
   components: {
     DatasetForm,
     RiskForm,
-    TraceForm
+    TraceForm,
   },
   data() {
     return {
@@ -109,9 +109,9 @@ export default {
     openRiskForm() {
       this.isRiskFormOpen = true
     },
-    openTraceForm(){
+    openTraceForm() {
       this.isTraceFormOpen = true
-    }
+    },
   },
 }
 </script>
