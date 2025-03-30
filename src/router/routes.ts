@@ -6,7 +6,7 @@ import RouteViewComponent from '../layouts/RouterBypass.vue'
 export const routes: Array<RouteRecordRaw> = [
   {
     path: '/:pathMatch(.*)*',
-    redirect: { name: 'detect' },
+    redirect: { name: 'dashboard' },
   },
   {
     name: 'admin',

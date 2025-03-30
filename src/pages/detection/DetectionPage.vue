@@ -53,6 +53,8 @@
               <td>kd5fee0c6f1d0d730de259c64e6373a0c_test_1</td>
               <td>
                 <VaButton round color="danger" @click="openRiskForm">风险</VaButton>
+                <span style="width: 20px; display: inline-block;"></span>
+                <VaButton round @click="openTraceForm">智能分析</VaButton>
               </td>
             </tr>
           </tbody>
@@ -71,22 +73,29 @@
     <h1 class="va-h5">风险数据</h1>
     <RiskForm />
   </VaModal>
+  <VaModal v-model="isTraceFormOpen" size="large" mobile-fullscreen close-button hide-default-actions>
+    <h1 class="va-h5">智能分析</h1>
+    <TraceForm />
+  </VaModal>
 </template>
 
 <script>
 import DatasetForm from './DatasetForm.vue'
 import RiskForm from './RiskForm.vue'
+import TraceForm from './TraceForm.vue'
 
 export default {
   name: 'DetectionPage',
   components: {
     DatasetForm,
     RiskForm,
+    TraceForm
   },
   data() {
     return {
       result: 0,
       isRiskFormOpen: false,
+      isTraceFormOpen: false,
       currentStep: 4,
     }
   },
@@ -100,6 +109,9 @@ export default {
     openRiskForm() {
       this.isRiskFormOpen = true
     },
+    openTraceForm(){
+      this.isTraceFormOpen = true
+    }
   },
 }
 </script>
