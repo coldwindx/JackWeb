@@ -36,7 +36,7 @@ import { ref } from "vue";
 // 定义响应式数据
 const newMessage = ref(""); // 用户输入的消息
 const messages = ref([
-  { sender: "ai", image: "https://picsum.photos/400" },
+  { sender: "ai", image: "E:/workspace/JackWeb/public/round-table.gv.png" },
   { sender: "ai", text: "你好！我是AI助手，有什么可以帮你的吗？"},
 ]); // 聊天记录
 

@@ -1,49 +1,30 @@
-import matplotlib.pyplot as plt
-import networkx as nx
+from graphviz import Digraph
 
-# Define the nodes and edges
-nodes = ['wannacry.exe', 'cmd.exe', '!wannadecryptor.exe', 'cscript.exe', 'taskkill.exe']
-edges = [
-    ('wannacry.exe', 'cmd.exe'),
-    ('wannacry.exe', '!wannadecryptor.exe'),
-    ('wannacry.exe', 'cscript.exe'),
-    ('wannacry.exe', 'taskkill.exe'),
-    ('wannacry.exe', 'taskkill.exe'),
-    ('wannacry.exe', 'taskkill.exe'),
-    ('wannacry.exe', 'taskkill.exe'),
-    ('wannacry.exe', '!wannadecryptor.exe'),
-    ('wannacry.exe', 'cmd.exe'),
-    ('wannacry.exe', '!wannadecryptor.exe')
-]
+dot = Digraph(comment='The Round Table')
+dot.node('1', 'wannacry.exe')
+dot.node('2', 'cmd.exe')
+dot.node('3', '!wannadecryptor.exe')
+dot.node('4', 'taskkill.exe')
+dot.node('5', 'taskkill.exe')
+dot.node('6', 'taskkill.exe')
+dot.node('7', 'taskkill.exe')
+dot.node('8', '!wannadecryptor.exe')
+dot.node('9', 'cmd.exe')
+dot.node('10', '!wannadecryptor.exe')
+dot.node('11', 'cscript.exe')
+dot.node('12', '!wannadecryptor.exe')
 
-# Create a directed graph
-G = nx.DiGraph()
-G.add_nodes_from(nodes)
-G.add_edges_from(edges)
+dot.edge('1', '2')
+dot.edge('1', '3')
+dot.edge('1', '4')
+dot.edge('1', '5')
+dot.edge('1', '6')
+dot.edge('1', '7')
+dot.edge('1', '8')
+dot.edge('1', '9')
+dot.edge('1', '10')
+dot.edge('2', '11')
+dot.edge('9', '12')
 
-# Position nodes using spring layout
-pos = nx.spring_layout(G)
-
-# Draw nodes
-nx.draw_networkx_nodes(G, pos, node_color='lightblue', node_size=3000)
-
-# Draw edges
-nx.draw_networkx_edges(G, pos, edge_color='gray')
-
-# Draw labels
-labels = {node: node for node in nodes}
-nx.draw_networkx_labels(G, pos, labels, font_size=12, font_weight='bold')
-
-# Highlight specific nodes
-highlighted_nodes = ['wannacry.exe', 'cmd.exe', '!wannadecryptor.exe', 'cscript.exe']
-nx.draw_networkx_nodes(G, pos, nodelist=highlighted_nodes, node_color='red', node_size=3000)
-
-# Highlight specific edges
-highlighted_edges = [('wannacry.exe', 'cmd.exe'), ('wannacry.exe', '!wannadecryptor.exe'), ('wannacry.exe', 'cscript.exe')]
-nx.draw_networkx_edges(G, pos, edgelist=highlighted_edges, edge_color='red', width=2)
-
-# Set margins
-plt.margins(0.1, 0.1)
-
-# Show the plot
-plt.show()
+print(dot.source)  
+dot.render('public/round-table.gv', format='png', view=True)  

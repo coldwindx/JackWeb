@@ -1,0 +1,26 @@
+// The Round Table
+digraph {
+	1 [label="wannacry.exe"]
+	2 [label="cmd.exe"]
+	3 [label="!wannadecryptor.exe"]
+	4 [label="taskkill.exe"]
+	5 [label="taskkill.exe"]
+	6 [label="taskkill.exe"]
+	7 [label="taskkill.exe"]
+	8 [label="!wannadecryptor.exe"]
+	9 [label="cmd.exe"]
+	10 [label="!wannadecryptor.exe"]
+	11 [label="cscript.exe"]
+	12 [label="!wannadecryptor.exe"]
+	1 -> 2
+	1 -> 3
+	1 -> 4
+	1 -> 5
+	1 -> 6
+	1 -> 7
+	1 -> 8
+	1 -> 9
+	1 -> 10
+	2 -> 11
+	9 -> 12
+}
