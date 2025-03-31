@@ -27,4 +27,4 @@ dot.edge('2', '11')
 dot.edge('9', '12')
 
 print(dot.source)  
-dot.render('public/round-table.gv', format='png', view=True)  
+dot.render('public/round-table.gv', format='svg', view=True)  
