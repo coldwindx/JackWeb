@@ -92,7 +92,7 @@
   },
   "menu": {
     "datasets": "数据收集",
-    "dashboard": "仪表板",
+    "dashboard": "首页",
     "users": "用户管理",
     "detection": "勒索检测",
     "history": "历史记录",
